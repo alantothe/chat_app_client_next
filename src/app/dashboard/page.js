@@ -7,19 +7,32 @@ import Friends from "./layout/Friends";
 const Dashboard = () => {
   return (
     <div className="flex flex-row w-screen h-screen m-0">
-      <div className="w-1/12">
+      <div style={{ flexBasis: "4.166667%" }}>
         <SideUserBar />
       </div>
 
-      <div className="w-1/5">
+      <div
+        className="border-r border-opacity-25 border-white"
+        style={{ flexBasis: "20.833333%", borderRightWidth: "1px" }}
+      >
         <MainSideBar />
       </div>
 
-      <div className="w-8/12">
+      <div
+        className="border-l border-r border-opacity-25 border-white"
+        style={{
+          flexBasis: "58.333333%",
+          borderLeftWidth: "0px",
+          borderRightWidth: "1px",
+        }}
+      >
         <ChatBox />
       </div>
 
-      <div className="w-1/5">
+      <div
+        className="border-l border-opacity-25 border-white"
+        style={{ flexBasis: "16.666667%", borderLeftWidth: "0px" }}
+      >
         <Friends />
       </div>
     </div>

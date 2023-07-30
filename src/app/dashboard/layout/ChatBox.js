@@ -9,9 +9,18 @@ function ChatBox(props) {
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
+
   return (
-    <div className="h-full bg-zinc-800 text-white flex flex-col">
-      <header className="h-1/5 flex-shrink-0"></header>
+    <div
+      className="h-full text-white flex flex-col"
+      style={{ backgroundColor: "rgb(20, 20, 20)" }}
+    >
+      <header className="h-24 relative flex-shrink-0">
+        <div
+          style={{ width: "95%" }}
+          className="mx-auto absolute bottom-0 left-0 right-0 border-b border-white border-opacity-20"
+        ></div>
+      </header>
       <div className="overflow-y-auto flex-grow">{/* Messages go here */}</div>
       <footer className="flex w-full px-5 justify-center flex-shrink-0 mb-5">
         <div className="relative w-full px-3 h-12">
