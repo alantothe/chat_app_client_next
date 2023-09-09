@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { registerUser } from "@/api/user/postRequest";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -10,6 +11,8 @@ const RegisterPage = () => {
     lastName: "",
     email: "",
     password: "",
+    avatar:
+      "https://res.cloudinary.com/dzjr3skhe/image/upload/v1687213143/alan_photos/alan-photo-pixelicious_iknzvi.png",
   });
 
   const handleChange = (event) => {
@@ -19,7 +22,18 @@ const RegisterPage = () => {
       [name]: value,
     }));
   };
-  console.log(formData);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const user = await registerUser(formData);
+
+      console.log(user);
+    } catch (err) {
+      throw err;
+    }
+  };
+
   return (
     <div className="bg-purple-700 min-h-screen flex items-center justify-center">
       <section className="bg-gray-800 p-10 rounded-lg w-96">
@@ -27,7 +41,7 @@ const RegisterPage = () => {
           <h1 className="text-4xl font-bold mb-10 text-white">Register Page</h1>
           <h3 className="text-white mb-5">Welcome to Alan_Chat</h3>
         </header>
-        <form className="flex flex-col item-center">
+        <form className="flex flex-col item-center" onSubmit={handleSubmit}>
           <input
             className="text-black mb-5"
             placeholder="Enter First Name"
