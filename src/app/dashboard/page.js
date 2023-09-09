@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import SideUserBar from "./layout/SideUserBar";
-import MainSideBar from "./layout/MainSideBar";
-import ChatBox from "./layout/ChatBox";
-import Friends from "./layout/Friends";
+import SideUserBar from "./layout/SideUserbar/SideUserBar";
+import MainSideBar from "./layout/MainSideBar/MainSideBar";
+import ChatBox from "./layout/ChatBox/ChatBox";
+import Friends from "./layout/Friends/Friends.js";
 import { useSelector } from "react-redux";
 import socket from "../../api/socket.js";
 
