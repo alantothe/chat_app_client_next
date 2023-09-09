@@ -1,24 +1,20 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
+import { registerUserReducers } from "./userExtraReducers";
 
-export const counterSlice = createSlice({
-  name: "counter",
+export const userSlice = createSlice({
+  name: "user",
   initialState: {
-    value: 0,
+    user: undefined,
+    loading: false,
+    error: null,
   },
-  reducers: {
-    increment: (state) => {
-      state.value += 1;
-    },
-    decrement: (state) => {
-      state.value -= 1;
-    },
-    incrementByAmount: (state, action) => {
-      state.value += action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    registerUserReducers(builder);
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
-export default counterSlice.reducer;
+export const {} = userSlice.actions;
+export default userSlice.reducer;
