@@ -14,6 +14,6 @@ export async function loginUser(credentials) {
     const response = await api.post("/users/login", credentials);
     return response;
   } catch (error) {
-    console.log("Error: Registering user.", error);
+    console.log("Error: logging user.", error);
   }
 }
