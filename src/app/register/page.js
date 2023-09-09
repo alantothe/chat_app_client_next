@@ -31,6 +31,7 @@ const RegisterPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     dispatch(registerUserThunk(formData));
+    router.push("/dashboard");
   };
   //based of truthy or falsy from state
   useEffect(() => {
