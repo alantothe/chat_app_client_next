@@ -8,9 +8,8 @@ const RegisterPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
-
   const error = useSelector((state) => state.user.error);
-
+  const [disableButton, setDisableButton] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -37,6 +36,7 @@ const RegisterPage = () => {
   useEffect(() => {
     if (loggedInUser) {
       console.log(loggedInUser);
+      setDisableButton(true);
     }
     if (error) {
       console.error("Error registering user:", error);
@@ -93,6 +93,7 @@ const RegisterPage = () => {
           ></input>
           <button
             type="submit"
+            disabled={disableButton}
             className="bg-purple-700 text-white rounded px-5 py-2 mb-6 w-full text-bold"
           >
             Register
