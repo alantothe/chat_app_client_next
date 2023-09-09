@@ -6,7 +6,7 @@ import { registerUserReducers } from "./userExtraReducers";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    loggedInUser: {}, // or loggedInUser: {}
+    loggedInUser: undefined, // or loggedInUser: {}
     loading: false,
     error: null,
   },

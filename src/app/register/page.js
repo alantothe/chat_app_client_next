@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { registerUserThunk } from "../redux/features/user/userThunks";
 import { useSelector, useDispatch } from "react-redux";
+import { useDropzone } from "react-dropzone";
 const RegisterPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -15,8 +16,38 @@ const RegisterPage = () => {
     lastName: "",
     email: "",
     password: "",
-    avatar:
-      "https://res.cloudinary.com/dzjr3skhe/image/upload/v1687213143/alan_photos/alan-photo-pixelicious_iknzvi.png",
+    avatar: "",
+  });
+
+  console.log(formData);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: "image/*",
+    onDrop: async (acceptedFiles) => {
+      // Upload to Cloudinary
+      const uploadData = new FormData();
+      uploadData.append("file", acceptedFiles[0]);
+      uploadData.append("upload_preset", "fzfav2ym");
+
+      try {
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/dzjr3skhe/image/upload`,
+          {
+            method: "POST",
+            body: uploadData,
+          }
+        );
+        const data = await response.json();
+
+        // Update formData.avatar with the secure_url from Cloudinary
+        setFormData((prevState) => ({
+          ...prevState,
+          avatar: data.secure_url,
+        }));
+      } catch (error) {
+        console.error("Error uploading the image:", error);
+      }
+    },
   });
 
   const handleChange = (event) => {
@@ -30,16 +61,16 @@ const RegisterPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     dispatch(registerUserThunk(formData));
-    router.push("/dashboard");
   };
   //based of truthy or falsy from state
   useEffect(() => {
     if (loggedInUser) {
-      console.log(loggedInUser);
-      setDisableButton(true);
+      router.push("/dashboard");
     }
     if (error) {
       console.error("Error registering user:", error);
+
+      setDisableButton(false);
     }
   }, [loggedInUser, error]);
 
@@ -91,9 +122,39 @@ const RegisterPage = () => {
             placeholder="Confirm Password"
             type="password"
           ></input>
+          <label className="text-white font-bold mt-4">
+            Upload your avatar:
+          </label>
+          <div
+            {...getRootProps()}
+            className={`dropzone relative mt-4 ${
+              isDragActive ? "dropzoneActive" : ""
+            } border-2 border-purple-500 rounded-md bg-purple-200 p-4 text-center`}
+          >
+            <input {...getInputProps()} />
+            {formData.avatar ? (
+              <div className="mx-auto w-36 h-36 rounded-full overflow-hidden">
+                <img
+                  src={formData.avatar}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ) : isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <p>Drag and drop some files here, or click to select files</p>
+            )}
+            {formData.avatar !==
+              "https://res.cloudinary.com/dzjr3skhe/image/upload/v1687213143/alan_photos/alan-photo-pixelicious_iknzvi.png" && (
+              <div className="mt-2 text-center text-white font-bold">
+                Use this Avatar?
+              </div>
+            )}
+          </div>
           <button
             type="submit"
-            disabled={disableButton}
+            // disabled={disableButton}
             className="bg-purple-700 text-white rounded px-5 py-2 mb-6 w-full text-bold"
           >
             Register
