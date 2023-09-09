@@ -77,7 +77,7 @@ const RegisterPage = () => {
         </form>
         <footer className="text-center">
           <h3
-            className="text-white mb-5 text-purple-700 cursor-pointer font-bold"
+            className="text-white mb-5  cursor-pointer font-bold"
             onClick={() => router.push("/login")}
           >
             Login?
