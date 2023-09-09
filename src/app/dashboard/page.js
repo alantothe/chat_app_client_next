@@ -6,9 +6,11 @@ import MainSideBar from "./layout/MainSideBar";
 import ChatBox from "./layout/ChatBox";
 import Friends from "./layout/Friends";
 import { useSelector } from "react-redux";
+import socket from "../../api/socket.js";
 
 const Dashboard = () => {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  socket.emit("event_test", { data: "hello server" });
   return (
     <div className="flex flex-row w-screen h-screen m-0">
       <div style={{ flexBasis: "4.166667%" }}>
