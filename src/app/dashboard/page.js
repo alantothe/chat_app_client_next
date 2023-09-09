@@ -1,14 +1,18 @@
+"use client";
+
 import React from "react";
 import SideUserBar from "./layout/SideUserBar";
 import MainSideBar from "./layout/MainSideBar";
 import ChatBox from "./layout/ChatBox";
 import Friends from "./layout/Friends";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
   return (
     <div className="flex flex-row w-screen h-screen m-0">
       <div style={{ flexBasis: "4.166667%" }}>
-        <SideUserBar />
+        <SideUserBar loggedInUser={loggedInUser} />
       </div>
 
       <div
