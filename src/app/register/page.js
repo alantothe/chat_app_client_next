@@ -1,11 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { registerUser } from "@/api/user/postRequest";
-
+import { registerUserThunk } from "../redux/features/user/userThunks";
+import { useSelector, useDispatch } from "react-redux";
 const RegisterPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+
+  const error = useSelector((state) => state.user.error);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,14 +30,17 @@ const RegisterPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const user = await registerUser(formData);
-
-      console.log(user);
-    } catch (err) {
-      throw err;
-    }
+    dispatch(registerUserThunk(formData));
   };
+  //based of truthy or falsy from state
+  useEffect(() => {
+    if (loggedInUser) {
+      console.log(loggedInUser);
+    }
+    if (error) {
+      console.error("Error registering user:", error);
+    }
+  }, [loggedInUser, error]);
 
   return (
     <div className="bg-purple-700 min-h-screen flex items-center justify-center">

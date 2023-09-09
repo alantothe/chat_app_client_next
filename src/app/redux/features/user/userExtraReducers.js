@@ -8,11 +8,12 @@ export const registerUserReducers = (builder) => {
       state.status = "loading";
       state.error = null;
     })
-    .addCase(registerUserThunk.fulfilled, (state) => {
+    .addCase(registerUserThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.user = action.payload.user;
+      console.log("Payload:", action.payload);
+      state.loggedInUser = action.payload.user;
     })
-    .addCase(registerUserThunk.rejected, (state) => {
+    .addCase(registerUserThunk.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.payload;
     });
