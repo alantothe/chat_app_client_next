@@ -31,7 +31,7 @@ const LoginPage = () => {
           <h1 className="text-4xl font-bold mb-10 text-white">Login Page</h1>
           <h3 className="text-white mb-5">Welcome Back to Alan_Chat</h3>
         </header>
-        <form onClick={handleSubmit} className="flex flex-col item-center">
+        <form onSubmit={handleSubmit} className="flex flex-col item-center">
           <input
             className="text-black mb-5"
             placeholder="Enter E-Mail"
