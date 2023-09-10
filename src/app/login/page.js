@@ -22,6 +22,7 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(loginUserThunk(formData));
+    router.push("/dashboard");
   };
   return (
     <div className="bg-purple-700 min-h-screen flex items-center justify-center">

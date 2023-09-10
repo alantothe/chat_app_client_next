@@ -27,7 +27,7 @@ export const loginUserReducers = (builder) => {
     })
     .addCase(loginUserThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
-      console.log("Payload:", action.payload);
+      console.log("payload:", action.payload);
       state.loggedInUser = action.payload.user;
     })
     .addCase(loginUserThunk.rejected, (state, action) => {
