@@ -6,10 +6,13 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import { SignOutDialog } from "./components/SignOutDialog";
+import { AddFriendDialog } from "./components/AddFriendDialog";
 
 const SideUserBar = ({ loggedInUser }) => {
   let [dialogOpen, setDialogOpen] = useState(false);
+  let [addDialogOpen, setAddDialogOpen] = useState(false);
   const toggleDialog = () => setDialogOpen((prev) => !prev);
+  const toggleAddDialog = () => setAddDialogOpen((prev) => !prev);
 
   return (
     <div
@@ -22,7 +25,10 @@ const SideUserBar = ({ loggedInUser }) => {
       {createElement(
         UserPlusIcon,
 
-        { className: "h-14 w-14 pt-3" }
+        {
+          className: "h-14 w-14 pt-3  cursor-pointer",
+          onClick: toggleAddDialog,
+        }
       )}
 
       {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
@@ -32,6 +38,7 @@ const SideUserBar = ({ loggedInUser }) => {
       })}
 
       <SignOutDialog open={dialogOpen} toggleDialog={toggleDialog} />
+      <AddFriendDialog open={addDialogOpen} toggleDialog={toggleAddDialog} />
     </div>
   );
 };

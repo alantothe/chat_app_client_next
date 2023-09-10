@@ -6,25 +6,21 @@ import {
   DialogBody,
   DialogFooter,
   Input,
-  Textarea,
 } from "@material-tailwind/react";
 
-export function AddFriendDialog() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => setOpen(!open);
+export function AddFriendDialog({ open, toggleAddDialog }) {
+  const handleConfirm = () => {};
 
   return (
     <>
-      <Dialog open={open} handler={handleOpen}>
+      <Dialog open={open}>
         <div className="flex items-center justify-between">
-          <DialogHeader>New message to @</DialogHeader>
+          <DialogHeader>New Friend Request</DialogHeader>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
             className="mr-3 h-5 w-5"
-            onClick={handleOpen}
           >
             <path
               fillRule="evenodd"
@@ -39,10 +35,10 @@ export function AddFriendDialog() {
           </div>
         </DialogBody>
         <DialogFooter className="space-x-2">
-          <Button variant="outlined" color="red" onClick={handleOpen}>
+          <Button variant="outlined" color="red" onClick={toggleAddDialog}>
             close
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
+          <Button variant="gradient" color="green" onClick={toggleAddDialog}>
             send message
           </Button>
         </DialogFooter>
