@@ -12,8 +12,12 @@ const SideUserBar = ({ loggedInUser }) => {
   let [dialogOpen, setDialogOpen] = useState(false);
   let [addDialogOpen, setAddDialogOpen] = useState(false);
   const toggleDialog = () => setDialogOpen((prev) => !prev);
-  const toggleAddDialog = () => setAddDialogOpen((prev) => !prev);
-
+  const toggleAddDialog = () => {
+    setAddDialogOpen((prev) => {
+      console.log("Toggling addDialogOpen from", prev, "to", !prev);
+      return !prev;
+    });
+  };
   return (
     <div
       className="h-full text-white flex flex-col items-center justify-start pt-7"
@@ -38,7 +42,7 @@ const SideUserBar = ({ loggedInUser }) => {
       })}
 
       <SignOutDialog open={dialogOpen} toggleDialog={toggleDialog} />
-      <AddFriendDialog open={addDialogOpen} toggleDialog={toggleAddDialog} />
+      <AddFriendDialog open={addDialogOpen} toggleAddDialog={toggleAddDialog} />
     </div>
   );
 };

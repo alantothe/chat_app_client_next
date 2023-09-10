@@ -1,26 +1,35 @@
-import React from "react";
+import { createElement } from "react";
 import {
   Button,
   Dialog,
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Typography,
   Input,
 } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
 
 export function AddFriendDialog({ open, toggleAddDialog }) {
-  const handleConfirm = () => {};
+  const router = useRouter();
 
   return (
     <>
-      <Dialog open={open}>
-        <div className="flex items-center justify-between">
-          <DialogHeader>New Friend Request</DialogHeader>
+      <Dialog
+        open={open}
+        handler={toggleAddDialog}
+        className="max-w-md mx-auto mt-10 place-items-center rounded-lg shadow-lg bg-white dark:bg-zinc-900"
+      >
+        <DialogHeader className="bg-blue-gray-100 px-5 py-3 flex justify-between">
+          <Typography variant="h5" color="blue-gray">
+            New Friend Request
+          </Typography>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            className="mr-3 h-5 w-5"
+            className="h-6 w-6 cursor-pointer text-red-500"
+            onClick={toggleAddDialog}
           >
             <path
               fillRule="evenodd"
@@ -28,18 +37,21 @@ export function AddFriendDialog({ open, toggleAddDialog }) {
               clipRule="evenodd"
             />
           </svg>
-        </div>
-        <DialogBody divider>
-          <div className="grid gap-6">
-            <Input label="Username" />
-          </div>
+        </DialogHeader>
+
+        <DialogBody divider className="grid place-items-center gap-4 p-5">
+          <Input
+            placeholder="Search By E-Mail"
+            size="regular"
+            outline={false}
+            style={{ backgroundColor: "rgb(20, 20, 20)" }}
+            className="w-full text-white bg-zinc-900  border-white focus:outline-none border-width: 2px "
+          />
         </DialogBody>
-        <DialogFooter className="space-x-2">
-          <Button variant="outlined" color="red" onClick={toggleAddDialog}>
-            close
-          </Button>
-          <Button variant="gradient" color="green" onClick={toggleAddDialog}>
-            send message
+
+        <DialogFooter className="border-t border-blue-gray-200 space-x-2 px-5 py-3 flex justify-center">
+          <Button variant="gradient" color="green">
+            Send Friend Request
           </Button>
         </DialogFooter>
       </Dialog>
