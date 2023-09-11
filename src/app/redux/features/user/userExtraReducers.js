@@ -40,7 +40,7 @@ export const loginUserReducers = (builder) => {
     });
 };
 
-export const getUserByIdThunk = (builder) => {
+export const getUserByIdExtraReducers = (builder) => {
   builder
     .addCase(loginUserThunk.pending, (state) => {
       state.status = "loading";
