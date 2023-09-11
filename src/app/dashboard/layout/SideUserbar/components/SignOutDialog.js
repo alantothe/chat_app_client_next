@@ -15,6 +15,7 @@ export function SignOutDialog({ open, toggleDialog }) {
   const router = useRouter();
   const handleConfirm = () => {
     router.push("/login");
+    localStorage.clear();
     toggleDialog();
   };
   return (

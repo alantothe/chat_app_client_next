@@ -2,18 +2,8 @@
 
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { registerUser, loginUser } from "@/api/user/postRequest";
+import { getUserById } from "@/api/user/getRequest.js";
 import jwtDecode from "jwt-decode";
-
-const decodeJWT = (token) => {
-  try {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(atob(base64));
-  } catch (error) {
-    console.error("Failed to decode JWT:", error);
-    return null;
-  }
-};
 
 export const registerUserThunk = createAsyncThunk(
   "user/registerUserThunk",
@@ -40,6 +30,18 @@ export const loginUserThunk = createAsyncThunk(
       const user = jwtDecode(token);
 
       return { user: user, token: token };
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+export const getUserByIdThunk = createAsyncThunk(
+  "user/getUserByIdThunk",
+  async (_id, thunkAPI) => {
+    try {
+      const user = await getUserById(_id);
+      return user;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
     }

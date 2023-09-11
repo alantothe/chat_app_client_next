@@ -4,7 +4,9 @@ import {
   ArrowSmallLeftIcon,
   UserCircleIcon,
   UserPlusIcon,
+  InboxArrowDownIcon,
 } from "@heroicons/react/24/outline";
+import { Tooltip } from "@material-tailwind/react";
 import { SignOutDialog } from "./components/SignOutDialog";
 import { AddFriendDialog } from "./components/AddFriendDialog";
 
@@ -26,20 +28,36 @@ const SideUserBar = ({ loggedInUser }) => {
       {loggedInUser ? (
         <UserProfile user={{ avatar: loggedInUser.avatar }} avatarSize="50px" />
       ) : null}
-      {createElement(
-        UserPlusIcon,
+      <Tooltip
+        content="Send Friend Request"
+        placement="right"
+        className="bg-zinc-700 mt-1"
+      >
+        {createElement(
+          UserPlusIcon,
 
-        {
-          className: "h-14 w-14 pt-3  cursor-pointer",
-          onClick: toggleAddDialog,
-        }
-      )}
-
-      {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
-      {createElement(ArrowSmallLeftIcon, {
-        className: "h-14 w-14 pt-3 cursor-pointer",
-        onClick: toggleDialog,
-      })}
+          {
+            className: "h-14 w-14 pt-3  cursor-pointer",
+            onClick: toggleAddDialog,
+          }
+        )}
+      </Tooltip>
+      <Tooltip
+        content="Profile Page"
+        placement="right"
+        className="bg-zinc-700 mt-1"
+      >
+        {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
+      </Tooltip>
+      <Tooltip content="Inbox" placement="right" className="bg-zinc-700 mt-1">
+        {createElement(InboxArrowDownIcon, { className: "h-14 w-14 pt-3" })}
+      </Tooltip>
+      <Tooltip content="Log Off" placement="right" className="bg-zinc-700 mt-1">
+        {createElement(ArrowSmallLeftIcon, {
+          className: "h-14 w-14 pt-3 cursor-pointer",
+          onClick: toggleDialog,
+        })}
+      </Tooltip>
 
       <SignOutDialog open={dialogOpen} toggleDialog={toggleDialog} />
       <AddFriendDialog open={addDialogOpen} toggleAddDialog={toggleAddDialog} />

@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { loginUserThunk } from "../redux/features/user/userThunks";
 import { useSelector, useDispatch } from "react-redux";
 const LoginPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const error = useSelector((state) => state.user.error);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,8 +24,18 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(loginUserThunk(formData));
-    router.push("/dashboard");
   };
+
+  useEffect(() => {
+    if (loggedInUser) {
+      router.push("/dashboard");
+    }
+    if (error) {
+      console.error("Error registering user:", error);
+
+      setDisableButton(false);
+    }
+  }, [loggedInUser, error]);
   return (
     <div className="bg-purple-700 min-h-screen flex items-center justify-center">
       <section className="bg-gray-800 p-10 rounded-lg w-96">
