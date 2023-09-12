@@ -1,3 +1,4 @@
+"use client";
 import { createElement, useState } from "react";
 import UserProfile from "@/components/UserProfile";
 import {
@@ -6,9 +7,9 @@ import {
   UserPlusIcon,
   InboxArrowDownIcon,
 } from "@heroicons/react/24/outline";
-import { Tooltip } from "@material-tailwind/react";
+import { Tooltip, Badge, IconButton } from "@material-tailwind/react";
 import { SignOutDialog } from "./components/SignOutDialog";
-import { AddFriendDialog } from "./components/AddFriendDialog";
+import { AddFriendDialog } from "./components/AddFriend/AddFriendDialog";
 import { Inbox } from "./components/Inbox/Inbox";
 
 const SideUserBar = ({ loggedInUser }) => {
@@ -53,12 +54,20 @@ const SideUserBar = ({ loggedInUser }) => {
       >
         {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
       </Tooltip>
-      <Tooltip content="Inbox" placement="right" className="bg-zinc-700 mt-1">
-        {createElement(InboxArrowDownIcon, {
-          className: "h-14 w-14 pt-3",
-          onClick: toggleInboxDialog,
-        })}
-      </Tooltip>
+      <div className="relative inline-block overflow-visible">
+        <Badge content="5" className="bg-zinc-200 mt-3 h-2 w-2 ">
+          <Tooltip
+            content="Inbox"
+            placement="right"
+            className="bg-zinc-700 mt-1"
+          >
+            {createElement(InboxArrowDownIcon, {
+              className: "h-14 w-14 pt-3",
+              onClick: toggleInboxDialog,
+            })}
+          </Tooltip>
+        </Badge>
+      </div>
       <Tooltip content="Log Off" placement="right" className="bg-zinc-700 mt-1">
         {createElement(ArrowSmallLeftIcon, {
           className: "h-14 w-14 pt-3 cursor-pointer",

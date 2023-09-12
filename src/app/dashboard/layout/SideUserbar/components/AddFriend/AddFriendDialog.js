@@ -1,4 +1,4 @@
-import { createElement } from "react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
@@ -11,8 +11,6 @@ import {
 import { useRouter } from "next/navigation";
 
 export function AddFriendDialog({ open, toggleAddDialog }) {
-  const router = useRouter();
-
   return (
     <>
       <Dialog
