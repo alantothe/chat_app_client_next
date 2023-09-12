@@ -32,8 +32,6 @@ const LoginPage = () => {
     }
     if (error) {
       console.error("Error registering user:", error);
-
-      setDisableButton(false);
     }
   }, [loggedInUser, error]);
   return (

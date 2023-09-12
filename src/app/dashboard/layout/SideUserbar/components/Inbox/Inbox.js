@@ -5,63 +5,60 @@ import {
   DialogBody,
   DialogFooter,
   Typography,
+  Input,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import FriendRequestDetail from "./components/friendRequestDetail";
 export function Inbox({ open, toggleInboxDialog }) {
-  const handleOpen = () => setOpen(!open);
+  const friendRequests = useSelector(
+    (state) => state.user?.entireUser?.friendRequestsReceived || []
+  );
+
+  useEffect(() => {}, []);
 
   return (
     <>
-      <Dialog open={open} handler={toggleInboxDialog}>
-        <DialogHeader>Long modal</DialogHeader>
-        <DialogBody divider className="h-[40rem] overflow-scroll">
-          <Typography className="font-normal">
-            I always felt like I could do anything. That&apos;s the main thing
-            people are controlled by! Thoughts- their perception of themselves!
-            They&apos;re slowed down by their perception of themselves. If
-            you&apos;re taught you can&apos;t do anything, you won&apos;t do
-            anything. I was taught I could do everything. As we live, our hearts
-            turn colder. Cause pain is what we go through as we become older. We
-            get insulted by others, lose trust for those others. We get back
-            stabbed by friends. It becomes harder for us to give others a hand.
-            We get our heart broken by people we love, even that we give them
-            all we have. Then we lose family over time. What else could rust the
-            heart more over time? Blackgold.
-            <br />
-            <br />
-            We&apos;re not always in the position that we want to be at.
-            We&apos;re constantly growing. We&apos;re constantly making
-            mistakes. We&apos;re constantly trying to express ourselves and
-            actualize our dreams. If you have the opportunity to play this game
-            of life you need to appreciate every moment. A lot of people
-            don&apos;t appreciate the moment until it&apos;s passed.
-            <br /> <br />
-            There&apos;s nothing I really wanted to do in life that I
-            wasn&apos;t able to get good at. That&apos;s my skill. I&apos;m not
-            really specifically talented at anything except for the ability to
-            learn. That&apos;s what I do. That&apos;s what I&apos;m here for.
-            Don&apos;t be afraid to be wrong because you can&apos;t learn
-            anything from a compliment.
-            <br /> <br />
-            It really matters and then like it really doesn&apos;t matter. What
-            matters is the people who are sparked by it. And the people who are
-            like offended by it, it doesn&apos;t matter. Because it&apos;s about
-            motivating the doers. Because I&apos;m here to follow my dreams and
-            inspire other people to follow their dreams, too.
-            <br /> <br />
-            The time is now for it to be okay to be great. People in this world
-            shun people for being great. For being a bright color. For standing
-            out. But the time is now to be okay to be the greatest you. Would
-            you believe in what you believe in, if you were the only one who
-            believed it?
+      <Dialog
+        open={open}
+        handler={toggleInboxDialog}
+        className="max-w-4xl w-full mx-auto mt-10 sm:mt-20 place-items-center rounded-lg shadow-lg bg-white dark:bg-zinc-900"
+      >
+        <DialogHeader className="bg-blue-gray-100 px-5 py-3 flex justify-between">
+          <Typography variant="h5" color="blue-gray">
+            Incoming Friend Requests
           </Typography>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-6 w-6 cursor-pointer text-red-500"
+            onClick={toggleInboxDialog}
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </DialogHeader>
+
+        <DialogBody
+          divider
+          className="grid place-items-center gap-4 p-5 h-72 overflow-y-auto"
+        >
+          <Typography className="font-normal"></Typography>
+          {friendRequests
+            ? friendRequests.map((request, index) => (
+                <FriendRequestDetail request={request} key={index} />
+              ))
+            : null}
         </DialogBody>
-        <DialogFooter className="space-x-2">
+
+        <DialogFooter className="border-t border-blue-gray-200 space-x-2 px-5 py-3 flex justify-center">
           <Button variant="outlined" color="red" onClick={toggleInboxDialog}>
             close
-          </Button>
-          <Button variant="gradient" color="green" onClick={toggleInboxDialog}>
-            Save changes
           </Button>
         </DialogFooter>
       </Dialog>

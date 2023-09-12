@@ -2,9 +2,6 @@ import React from "react";
 import FriendDetail from "./components/FriendDetail";
 
 function Friends({ entireUser }) {
-  console.log("From Friends Components");
-  console.log(entireUser);
-
   const { detailedFriends = [] } = entireUser; // Default to empty array if undefined (edge case?)
 
   return (
