@@ -27,7 +27,7 @@ const Dashboard = () => {
         className="border-r border-opacity-25 border-white"
         style={{ flexBasis: "20.833333%", borderRightWidth: "1px" }}
       >
-        <MainSideBar />
+        <MainSideBar entireUser={entireUser} />
       </div>
 
       <div
@@ -45,7 +45,7 @@ const Dashboard = () => {
         className="border-l border-opacity-25 border-white"
         style={{ flexBasis: "16.666667%", borderLeftWidth: "0px" }}
       >
-        <Friends />
+        <Friends entireUser={entireUser} />
       </div>
     </div>
   );

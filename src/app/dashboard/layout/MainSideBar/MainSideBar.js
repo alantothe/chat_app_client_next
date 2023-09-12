@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Button from "@/components/Button.js";
 
-function MainSideBar(props) {
+function MainSideBar({ entireUser }) {
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
