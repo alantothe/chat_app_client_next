@@ -5,8 +5,6 @@ function FriendRequestDetail({ request }) {
 
   return (
     <div className="flex my-3 items-center">
-      {" "}
-      {/* Added items-center here */}
       <img
         src={requesterId.avatar}
         alt="Avatar"
