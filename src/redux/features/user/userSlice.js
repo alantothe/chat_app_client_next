@@ -1,10 +1,15 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUserReducers, loginUserReducers } from "./userExtraReducers";
+import {
+  registerUserReducers,
+  loginUserReducers,
+  getUserByIdExtraReducers,
+} from "./userExtraReducers";
 
 const initialState = {
   loggedInUser: undefined,
+  entireUser: undefined,
   loading: false,
   error: null,
 };
@@ -18,6 +23,7 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     registerUserReducers(builder);
     loginUserReducers(builder);
+    getUserByIdExtraReducers(builder);
   },
 });
 

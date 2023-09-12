@@ -31,7 +31,7 @@ export const loginUserReducers = (builder) => {
     })
     .addCase(loginUserThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
-      console.log("payload:", action.payload);
+      // console.log("payload:", action.payload);
       state.loggedInUser = action.payload.user;
     })
     .addCase(loginUserThunk.rejected, (state, action) => {
@@ -42,16 +42,16 @@ export const loginUserReducers = (builder) => {
 
 export const getUserByIdExtraReducers = (builder) => {
   builder
-    .addCase(loginUserThunk.pending, (state) => {
+    .addCase(getUserByIdThunk.pending, (state) => {
       state.status = "loading";
       state.error = null;
     })
-    .addCase(loginUserThunk.fulfilled, (state, action) => {
+    .addCase(getUserByIdThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
       console.log("payload:", action.payload);
-      state.loggedInUser = action.payload.user;
+      state.entireUser = action.payload.user;
     })
-    .addCase(loginUserThunk.rejected, (state, action) => {
+    .addCase(getUserByIdThunk.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.payload;
     });

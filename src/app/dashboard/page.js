@@ -1,15 +1,21 @@
 "use client";
 
-import React from "react";
+import { useEffect } from "react";
 import SideUserBar from "./layout/SideUserbar/SideUserBar";
 import MainSideBar from "./layout/MainSideBar/MainSideBar";
 import ChatBox from "./layout/ChatBox/ChatBox";
 import Friends from "./layout/Friends/Friends.js";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import socket from "../../api/socket.js";
+import { getUserByIdThunk } from "../../redux/features/user/userThunks";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const entireUser = useSelector((state) => state.user.entireUser);
+  useEffect(() => {
+    dispatch(getUserByIdThunk(loggedInUser._id));
+  }, []);
   socket.emit("event_test", { data: "hello server" });
   return (
     <div className="flex flex-row w-screen h-screen m-0">
