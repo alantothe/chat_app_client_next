@@ -10,12 +10,16 @@ import {
 } from "@material-tailwind/react";
 import { ArrowSmallLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { reset } from "@/redux/features/user/userSlice";
 
 export function SignOutDialog({ open, toggleDialog }) {
   const router = useRouter();
+  const dispatch = useDispatch();
   const handleConfirm = () => {
-    router.push("/login");
     localStorage.clear();
+    dispatch(reset());
+    router.push("/login");
     toggleDialog();
   };
   return (
