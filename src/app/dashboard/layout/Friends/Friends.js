@@ -5,9 +5,7 @@ function Friends({ entireUser }) {
   console.log("From Friends Components");
   console.log(entireUser);
 
-  const arrayOfFriends = entireUser.detailedFriends;
-
-  console.log(arrayOfFriends);
+  const { detailedFriends = [] } = entireUser; // Default to empty array if undefined (edge case?)
 
   return (
     <div
@@ -20,10 +18,12 @@ function Friends({ entireUser }) {
       </header>
       <div className="flex-grow p-5 flex flex-col overflow-hidden">
         <div className="flex-grow overflow-auto">
-          <h2>Online - (8)</h2>
-          {arrayOfFriends.map((friend, index) => (
-            <FriendDetail friend={friend} key={index} />
-          ))}
+          <h2>Online - ({detailedFriends.length})</h2>
+          {detailedFriends &&
+            detailedFriends.length > 0 &&
+            detailedFriends.map((friend, index) => (
+              <FriendDetail friend={friend} key={index} />
+            ))}
         </div>
         <div className="flex-grow overflow-auto">
           <h2>Offline - (12)</h2>
@@ -32,5 +32,9 @@ function Friends({ entireUser }) {
     </div>
   );
 }
+
+Friends.defaultProps = {
+  entireUser: {},
+};
 
 export default Friends;
