@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { loginUserThunk } from "../redux/features/user/userThunks";
+import { loginUserThunk } from "../../redux/features/user/userThunks";
 import { useSelector, useDispatch } from "react-redux";
 const LoginPage = () => {
   const router = useRouter();

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { registerUserThunk } from "../redux/features/user/userThunks";
+import { registerUserThunk } from "../../redux/features/user/userThunks";
 import { useSelector, useDispatch } from "react-redux";
 import { useDropzone } from "react-dropzone";
 const RegisterPage = () => {

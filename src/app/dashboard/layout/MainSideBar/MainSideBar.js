@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Button from "@/app/utils/components/Button.js";
+import Button from "@/components/Button.js";
 
 function MainSideBar(props) {
   const [message, setMessage] = useState("");

@@ -1,5 +1,5 @@
 import { createElement, useState } from "react";
-import UserProfile from "@/app/utils/components/UserProfile";
+import UserProfile from "@/components/UserProfile";
 import {
   ArrowSmallLeftIcon,
   UserCircleIcon,

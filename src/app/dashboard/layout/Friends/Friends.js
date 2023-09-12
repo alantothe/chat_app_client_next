@@ -1,5 +1,5 @@
 import React from "react";
-import UserProfile from "@/app/utils/components/UserProfile";
+import UserProfile from "@/components/UserProfile";
 
 function Friends() {
   return (
