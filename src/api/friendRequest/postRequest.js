@@ -9,6 +9,15 @@ export const acceptFriendRequest = async (form) => {
   }
 };
 
+export const rejectFriendRequest = async (form) => {
+  try {
+    const response = api.post("friendRequest/rejected", form);
+    return response;
+  } catch (error) {
+    console.log("Error: rejecting friend request.", error);
+  }
+};
+
 export async function sendFriendRequest(form) {
   try {
     const response = await post("/friendRequest/", form);
