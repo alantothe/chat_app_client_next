@@ -9,6 +9,7 @@ import {
 import { Tooltip } from "@material-tailwind/react";
 import { SignOutDialog } from "./components/SignOutDialog";
 import { AddFriendDialog } from "./components/AddFriendDialog";
+import { Inbox } from "./components/Inbox/Inbox";
 
 const SideUserBar = ({ loggedInUser }) => {
   let [dialogOpen, setDialogOpen] = useState(false);
@@ -22,6 +23,7 @@ const SideUserBar = ({ loggedInUser }) => {
       return !prev;
     });
   };
+  const toggleInboxDialog = () => setInboxDialogOpen((prev) => !prev);
   return (
     <div
       className="h-full text-white flex flex-col items-center justify-start pt-7"
@@ -52,7 +54,10 @@ const SideUserBar = ({ loggedInUser }) => {
         {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
       </Tooltip>
       <Tooltip content="Inbox" placement="right" className="bg-zinc-700 mt-1">
-        {createElement(InboxArrowDownIcon, { className: "h-14 w-14 pt-3" })}
+        {createElement(InboxArrowDownIcon, {
+          className: "h-14 w-14 pt-3",
+          onClick: toggleInboxDialog,
+        })}
       </Tooltip>
       <Tooltip content="Log Off" placement="right" className="bg-zinc-700 mt-1">
         {createElement(ArrowSmallLeftIcon, {
@@ -63,6 +68,7 @@ const SideUserBar = ({ loggedInUser }) => {
 
       <SignOutDialog open={dialogOpen} toggleDialog={toggleDialog} />
       <AddFriendDialog open={addDialogOpen} toggleAddDialog={toggleAddDialog} />
+      <Inbox open={inboxDialogOpen} toggleInboxDialog={toggleInboxDialog} />
     </div>
   );
 };

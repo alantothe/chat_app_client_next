@@ -6,16 +6,13 @@ import {
   DialogFooter,
   Typography,
 } from "@material-tailwind/react";
-
-export function Inbox() {
-  const [open, setOpen] = React.useState(false);
-
+import { useState } from "react";
+export function Inbox({ open, toggleInboxDialog }) {
   const handleOpen = () => setOpen(!open);
 
   return (
     <>
-      <Button onClick={handleOpen}>Long Dialog</Button>
-      <Dialog open={open} handler={handleOpen}>
+      <Dialog open={open} handler={toggleInboxDialog}>
         <DialogHeader>Long modal</DialogHeader>
         <DialogBody divider className="h-[40rem] overflow-scroll">
           <Typography className="font-normal">
@@ -60,10 +57,10 @@ export function Inbox() {
           </Typography>
         </DialogBody>
         <DialogFooter className="space-x-2">
-          <Button variant="outlined" color="red" onClick={handleOpen}>
+          <Button variant="outlined" color="red" onClick={toggleInboxDialog}>
             close
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
+          <Button variant="gradient" color="green" onClick={toggleInboxDialog}>
             Save changes
           </Button>
         </DialogFooter>
