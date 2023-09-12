@@ -13,6 +13,8 @@ import { AddFriendDialog } from "./components/AddFriendDialog";
 const SideUserBar = ({ loggedInUser }) => {
   let [dialogOpen, setDialogOpen] = useState(false);
   let [addDialogOpen, setAddDialogOpen] = useState(false);
+  let [inboxDialogOpen, setInboxDialogOpen] = useState(false);
+
   const toggleDialog = () => setDialogOpen((prev) => !prev);
   const toggleAddDialog = () => {
     setAddDialogOpen((prev) => {

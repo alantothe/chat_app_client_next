@@ -13,12 +13,12 @@ function Friends({ entireUser }) {
       style={{ backgroundColor: "rgb(20, 20, 20)" }}
     >
       <header className="w-full h-24 flex items-center justify-center relative">
-        <h1>Contacts</h1>
+        <h1>Contacts({detailedFriends.length})</h1>
         <div className=""></div>
       </header>
       <div className="flex-grow p-5 flex flex-col overflow-hidden">
         <div className="flex-grow overflow-auto">
-          <h2>Online - ({detailedFriends.length})</h2>
+          <h2>Online - ()</h2>
           {detailedFriends &&
             detailedFriends.length > 0 &&
             detailedFriends.map((friend, index) => (
@@ -26,7 +26,7 @@ function Friends({ entireUser }) {
             ))}
         </div>
         <div className="flex-grow overflow-auto">
-          <h2>Offline - (12)</h2>
+          <h2>Offline - ()</h2>
         </div>
       </div>
     </div>
