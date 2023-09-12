@@ -1,7 +1,16 @@
 import { Button } from "@material-tailwind/react";
+import { useState } from "react";
 
 function FriendRequestDetail({ request }) {
-  const { requesterId } = request;
+  const { requesterId, recipientId, _id } = request;
+  console.log(request);
+  const [formData, setFormData] = useState({
+    friendRequestID: _id,
+    response: "accepted",
+    requesterId: requesterId._id,
+    recipientId: recipientId._id,
+  });
+  console.log(formData);
 
   return (
     <div className="flex my-3 items-center">
