@@ -10,7 +10,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import FriendRequestDetail from "./components/friendRequestDetail";
+import FriendRequestDetail from "./components/FriendRequestDetail";
 export function Inbox({ open, toggleInboxDialog }) {
   const friendRequests = useSelector(
     (state) => state.user?.entireUser?.friendRequestsReceived || []
