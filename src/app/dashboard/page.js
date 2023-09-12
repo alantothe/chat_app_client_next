@@ -13,6 +13,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
+
   useEffect(() => {
     dispatch(getUserByIdThunk(loggedInUser._id));
   }, []);
