@@ -15,13 +15,16 @@ const Dashboard = () => {
   const entireUser = useSelector((state) => state.user.entireUser);
 
   useEffect(() => {
-    dispatch(getUserByIdThunk(loggedInUser._id));
-  }, []);
-  socket.emit("event_test", { data: "hello server" });
+    if (loggedInUser?._id && !entireUser) {
+      dispatch(getUserByIdThunk(loggedInUser._id));
+    }
+  }, [loggedInUser, entireUser]);
+
+  socket.emit("hello from client", { data: "hello server" });
   return (
     <div className="flex flex-row w-screen h-screen m-0">
       <div style={{ flexBasis: "4.166667%" }}>
-        <SideUserBar loggedInUser={loggedInUser} />
+        <SideUserBar entireUser={entireUser} />
       </div>
 
       <div

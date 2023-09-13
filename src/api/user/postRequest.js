@@ -17,12 +17,3 @@ export async function loginUser(credentials) {
     console.log("Error: logging user.", error);
   }
 }
-
-export async function sendFriendRequest(form) {
-  try {
-    const response = await post("/friendRequest/", form);
-    return response;
-  } catch (err) {
-    console.log("Error: sending friend request.", error);
-  }
-}

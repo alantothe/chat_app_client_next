@@ -11,12 +11,11 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import FriendRequestDetail from "./components/FriendRequestDetail";
+
 export function Inbox({ open, toggleInboxDialog }) {
   const friendRequests = useSelector(
     (state) => state.user?.entireUser?.friendRequestsReceived || []
   );
-
-  useEffect(() => {}, []);
 
   return (
     <>
@@ -25,8 +24,8 @@ export function Inbox({ open, toggleInboxDialog }) {
         handler={toggleInboxDialog}
         className="max-w-4xl w-full mx-auto mt-10 sm:mt-20 place-items-center rounded-lg shadow-lg bg-white dark:bg-zinc-900"
       >
-        <DialogHeader className="bg-blue-gray-100 px-5 py-3 flex justify-between">
-          <Typography variant="h5" color="blue-gray">
+        <DialogHeader className="bg-zinc-800 px-5 py-3 flex justify-between">
+          <Typography variant="h5" color="white">
             Incoming Friend Requests
           </Typography>
           <svg
@@ -46,7 +45,7 @@ export function Inbox({ open, toggleInboxDialog }) {
 
         <DialogBody
           divider
-          className="grid place-items-center gap-4 p-5 h-72 overflow-y-auto"
+          className="grid place-items-center gap-4 p-5 h-72 overflow-y-auto bg-zinc-800"
         >
           <Typography className="font-normal"></Typography>
           {friendRequests
@@ -56,7 +55,7 @@ export function Inbox({ open, toggleInboxDialog }) {
             : null}
         </DialogBody>
 
-        <DialogFooter className="border-t border-blue-gray-200 space-x-2 px-5 py-3 flex justify-center">
+        <DialogFooter className="border-t bg-zinc-800 space-x-2 px-5 py-3 flex justify-center">
           <Button variant="outlined" color="red" onClick={toggleInboxDialog}>
             close
           </Button>

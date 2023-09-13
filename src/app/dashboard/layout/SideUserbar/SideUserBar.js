@@ -1,5 +1,5 @@
 "use client";
-import { createElement, useState } from "react";
+import { createElement, useEffect, useState } from "react";
 import UserProfile from "@/components/UserProfile";
 import {
   ArrowSmallLeftIcon,
@@ -11,11 +11,15 @@ import { Tooltip, Badge, IconButton } from "@material-tailwind/react";
 import { SignOutDialog } from "./components/SignOutDialog";
 import { AddFriendDialog } from "./components/AddFriend/AddFriendDialog";
 import { Inbox } from "./components/Inbox/Inbox";
-
-const SideUserBar = ({ loggedInUser }) => {
+// import { useSelector, useDispatch } from "react-redux";
+// import { getUserByIdThunk } from "@/redux/features/user/userThunks";
+const SideUserBar = ({ entireUser }) => {
+  // const dispatch = useDispatch();
   let [dialogOpen, setDialogOpen] = useState(false);
   let [addDialogOpen, setAddDialogOpen] = useState(false);
   let [inboxDialogOpen, setInboxDialogOpen] = useState(false);
+  const [badgeCount, setBadgeCount] = useState(null);
+  const { friendRequestsReceived = [] } = entireUser || {};
 
   const toggleDialog = () => setDialogOpen((prev) => !prev);
   const toggleAddDialog = () => {
@@ -24,14 +28,18 @@ const SideUserBar = ({ loggedInUser }) => {
       return !prev;
     });
   };
+  useEffect(() => {
+    setBadgeCount(friendRequestsReceived.length);
+  }, [friendRequestsReceived]);
+
   const toggleInboxDialog = () => setInboxDialogOpen((prev) => !prev);
   return (
     <div
       className="h-full text-white flex flex-col items-center justify-start pt-7"
       style={{ backgroundColor: "rgb(18, 18, 22)" }}
     >
-      {loggedInUser ? (
-        <UserProfile user={{ avatar: loggedInUser.avatar }} avatarSize="50px" />
+      {entireUser ? (
+        <UserProfile user={{ avatar: entireUser.avatar }} avatarSize="50px" />
       ) : null}
       <Tooltip
         content="Send Friend Request"
@@ -54,8 +62,23 @@ const SideUserBar = ({ loggedInUser }) => {
       >
         {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
       </Tooltip>
-      <div className="relative inline-block overflow-visible">
-        <Badge content="5" className="bg-zinc-200 mt-3 h-2 w-2 ">
+      {badgeCount > 0 ? (
+        <div className="relative inline-block overflow-visible">
+          <Badge content={badgeCount} className="bg-zinc-200 mt-3 h-2 w-2 ">
+            <Tooltip
+              content="Inbox"
+              placement="right"
+              className="bg-zinc-700 mt-1"
+            >
+              {createElement(InboxArrowDownIcon, {
+                className: "h-14 w-14 pt-3",
+                onClick: toggleInboxDialog,
+              })}
+            </Tooltip>
+          </Badge>
+        </div>
+      ) : (
+        <div className="relative inline-block overflow-visible">
           <Tooltip
             content="Inbox"
             placement="right"
@@ -66,8 +89,8 @@ const SideUserBar = ({ loggedInUser }) => {
               onClick: toggleInboxDialog,
             })}
           </Tooltip>
-        </Badge>
-      </div>
+        </div>
+      )}
       <Tooltip content="Log Off" placement="right" className="bg-zinc-700 mt-1">
         {createElement(ArrowSmallLeftIcon, {
           className: "h-14 w-14 pt-3 cursor-pointer",
@@ -76,7 +99,14 @@ const SideUserBar = ({ loggedInUser }) => {
       </Tooltip>
 
       <SignOutDialog open={dialogOpen} toggleDialog={toggleDialog} />
-      <AddFriendDialog open={addDialogOpen} toggleAddDialog={toggleAddDialog} />
+      {entireUser ? (
+        <AddFriendDialog
+          entireUser={entireUser}
+          open={addDialogOpen}
+          toggleAddDialog={toggleAddDialog}
+        />
+      ) : null}
+
       <Inbox open={inboxDialogOpen} toggleInboxDialog={toggleInboxDialog} />
     </div>
   );

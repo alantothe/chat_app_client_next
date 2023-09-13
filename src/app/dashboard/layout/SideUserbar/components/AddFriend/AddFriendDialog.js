@@ -8,9 +8,31 @@ import {
   Typography,
   Input,
 } from "@material-tailwind/react";
-import { useRouter } from "next/navigation";
+import { sendFriendRequest } from "@/api/friendRequest/postRequest";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserByIdThunk } from "@/redux/features/user/userThunks";
+export function AddFriendDialog({ open, toggleAddDialog, entireUser }) {
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    requesterId: entireUser._id,
+    email: "",
+  });
 
-export function AddFriendDialog({ open, toggleAddDialog }) {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = async () => {
+    const response = await sendFriendRequest(formData);
+    if (response) {
+      dispatch(getUserByIdThunk(entireUser._id));
+    }
+    return response;
+  };
+  console.log(formData);
   return (
     <>
       <Dialog
@@ -40,6 +62,10 @@ export function AddFriendDialog({ open, toggleAddDialog }) {
         <DialogBody divider className="grid place-items-center gap-4 p-5">
           <Input
             placeholder="Search By E-Mail"
+            value={formData.email}
+            name="email"
+            id="email"
+            onChange={handleChange}
             size="regular"
             outline={false}
             style={{ backgroundColor: "rgb(20, 20, 20)" }}
@@ -48,7 +74,7 @@ export function AddFriendDialog({ open, toggleAddDialog }) {
         </DialogBody>
 
         <DialogFooter className="border-t border-blue-gray-200 space-x-2 px-5 py-3 flex justify-center">
-          <Button variant="gradient" color="green">
+          <Button onClick={handleSubmit} variant="gradient" color="green">
             Send Friend Request
           </Button>
         </DialogFooter>
