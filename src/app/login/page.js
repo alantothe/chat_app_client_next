@@ -28,7 +28,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (loggedInUser) {
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     }
     if (error) {
       console.error("Error registering user:", error);

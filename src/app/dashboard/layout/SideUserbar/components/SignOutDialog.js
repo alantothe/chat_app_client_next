@@ -1,5 +1,4 @@
 import { createElement } from "react";
-
 import {
   Button,
   Dialog,
@@ -12,11 +11,13 @@ import { ArrowSmallLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { reset } from "@/redux/features/user/userSlice";
+import socket from "@/api/socket";
 
 export function SignOutDialog({ open, toggleDialog }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const handleConfirm = () => {
+    socket.disconnect();
     localStorage.clear();
     dispatch(reset());
     router.push("/login");

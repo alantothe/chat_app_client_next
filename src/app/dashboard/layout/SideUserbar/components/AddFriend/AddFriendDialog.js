@@ -32,7 +32,7 @@ export function AddFriendDialog({ open, toggleAddDialog, entireUser }) {
     }
     return response;
   };
-  console.log(formData);
+
   return (
     <>
       <Dialog

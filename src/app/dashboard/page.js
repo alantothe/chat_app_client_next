@@ -17,10 +17,34 @@ const Dashboard = () => {
   useEffect(() => {
     if (loggedInUser?._id && !entireUser) {
       dispatch(getUserByIdThunk(loggedInUser._id));
+      socket.emit("hello from client", { data: loggedInUser._id });
     }
   }, [loggedInUser, entireUser]);
 
-  socket.emit("hello from client", { data: "hello server" });
+  useEffect(() => {
+    const handleFriendRequest = (data) => {
+      if (data.data === loggedInUser._id) {
+        console.log("lets refresh!");
+        dispatch(getUserByIdThunk(loggedInUser._id));
+      }
+    };
+    const handleAccept = (data) => {
+      if (data.data === loggedInUser._id) {
+        console.log("lets refresh!");
+        dispatch(getUserByIdThunk(loggedInUser._id));
+      }
+    };
+
+    socket.on("friend request accepted", handleAccept);
+
+    socket.on("friend request sent", handleFriendRequest);
+
+    // remove the listener when the component unmounts
+    return () => {
+      socket.off("friend request sent", handleFriendRequest);
+    };
+  }, [loggedInUser, dispatch]);
+
   return (
     <div className="flex flex-row w-screen h-screen m-0">
       <div style={{ flexBasis: "4.166667%" }}>
