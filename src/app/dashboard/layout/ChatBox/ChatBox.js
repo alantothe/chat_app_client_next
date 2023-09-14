@@ -20,14 +20,14 @@ function ChatBox({ chatOpen }) {
       {chatOpen ? (
         <>
           <header className="h-24 relative flex-shrink-0">
-            <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center">
+            <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-start ml-6">
               <img
                 src={chatOpen.avatar}
                 alt="Avatar"
-                className="object-cover  w-12 h-12 rounded-full overflow-hidden"
+                className="object-cover  w-14 h-14 rounded-full overflow-hidden"
               />
-              <h1 className="ml-3 mt-2">{chatOpen.firstName}</h1>
-              <h1 className="ml-1 mt-2">{chatOpen.lastName}</h1>
+              <h1 className="ml-3 mt-2 text-xl ">{chatOpen.firstName}</h1>
+              <h1 className="ml-1 mt-2 text-xl">{chatOpen.lastName}</h1>
             </div>
             <div
               style={{ width: "95%" }}
@@ -35,10 +35,27 @@ function ChatBox({ chatOpen }) {
             ></div>
           </header>
 
-          <div className="overflow-y-auto flex-grow flex items-center justify-center">
-            {createElement(UsersIcon, {
-              className: "h-28 w-28 text-zinc-200 opacity-10",
-            })}
+          <div className=" relative overflow-y-auto flex-grow flex-col items-center justify-start ml-6 ">
+            <div className="absolute bottom-0 ">
+              <div className="flex-col items-center ">
+                <img
+                  src={chatOpen.avatar}
+                  alt="Avatar"
+                  className="object-cover  w-14 h-14 rounded-full overflow-hidden"
+                />
+                <div className="flex">
+                  <h1 className="text-xl ">{chatOpen.firstName}</h1>
+                  <h1 className="text-xl">{chatOpen.lastName}</h1>
+                </div>
+              </div>
+              <div>
+                <h1 className="mt-2 text-xl">
+                  This is the start of your conversation with{" "}
+                  {chatOpen.firstName} {chatOpen.lastName}
+                  {}{" "}
+                </h1>
+              </div>
+            </div>
           </div>
         </>
       ) : (
