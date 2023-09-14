@@ -1,7 +1,7 @@
 import React from "react";
 import FriendDetail from "./components/FriendDetail";
 
-function Friends({ entireUser }) {
+function Friends({ entireUser, setChatOpen }) {
   const { detailedFriends = [] } = entireUser; // Default to empty array if undefined (edge case?)
 
   return (
@@ -19,7 +19,11 @@ function Friends({ entireUser }) {
           {detailedFriends &&
             detailedFriends.length > 0 &&
             detailedFriends.map((friend, index) => (
-              <FriendDetail friend={friend} key={index} />
+              <FriendDetail
+                setChatOpen={setChatOpen}
+                friend={friend}
+                key={index}
+              />
             ))}
         </div>
         <div className="flex-grow overflow-auto">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SideUserBar from "./layout/SideUserbar/SideUserBar";
 import MainSideBar from "./layout/MainSideBar/MainSideBar";
 import ChatBox from "./layout/ChatBox/ChatBox";
@@ -10,10 +10,12 @@ import socket from "../../api/socket.js";
 import { getUserByIdThunk } from "../../redux/features/user/userThunks";
 
 const Dashboard = () => {
+  //useState setCat = false
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
-
+  const [chatOpen, setChatOpen] = useState(false);
+  console.log(chatOpen);
   useEffect(() => {
     if (loggedInUser?._id && !entireUser) {
       dispatch(getUserByIdThunk(loggedInUser._id));
@@ -42,6 +44,7 @@ const Dashboard = () => {
     // remove the listener when the component unmounts
     return () => {
       socket.off("friend request sent", handleFriendRequest);
+      socket.off("friend request accepted", handleAccept);
     };
   }, [loggedInUser, dispatch]);
 
@@ -73,7 +76,7 @@ const Dashboard = () => {
         className="border-l border-opacity-25 border-white"
         style={{ flexBasis: "16.666667%", borderLeftWidth: "0px" }}
       >
-        <Friends entireUser={entireUser} />
+        <Friends setChatOpen={setChatOpen} entireUser={entireUser} />
       </div>
     </div>
   );
