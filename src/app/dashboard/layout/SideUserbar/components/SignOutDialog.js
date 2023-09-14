@@ -11,6 +11,7 @@ import { ArrowSmallLeftIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { reset } from "@/redux/features/user/userSlice";
+import { resetConvos } from "@/redux/features/conversations/conversationSlice";
 import socket from "@/api/socket";
 
 export function SignOutDialog({ open, toggleDialog }) {
@@ -20,6 +21,7 @@ export function SignOutDialog({ open, toggleDialog }) {
     socket.disconnect();
     localStorage.clear();
     dispatch(reset());
+    dispatch(resetConvos());
     router.push("/login");
     toggleDialog();
   };

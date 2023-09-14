@@ -1,11 +1,7 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
-// import {
-//   registerUserReducers,
-//   loginUserReducers,
-//   getUserByIdExtraReducers,
-// } from "./userExtraReducers";
+import { fetchAllConversationByIdReducer } from "./conversationExtraReducers";
 
 const initialState = {
   conversations: undefined,
@@ -17,10 +13,12 @@ export const conversationSlice = createSlice({
   name: "conversation",
   initialState,
   reducers: {
-    reset: () => initialState,
+    resetConvos: () => initialState,
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    fetchAllConversationByIdReducer(builder);
+  },
 });
 
-export const { reset } = conversationSlice.actions;
+export const { resetConvos } = conversationSlice.actions;
 export default conversationSlice.reducer;

@@ -8,18 +8,23 @@ import Friends from "./layout/Friends/Friends.js";
 import { useSelector, useDispatch } from "react-redux";
 import socket from "../../api/socket.js";
 import { getUserByIdThunk } from "../../redux/features/user/userThunks";
-
+import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
+  const conversations = useSelector(
+    (state) => state.conversation.conversations
+  );
+
   const [chatOpen, setChatOpen] = useState(null);
   useEffect(() => {
-    if (loggedInUser?._id && !entireUser) {
+    if (loggedInUser?._id && !entireUser && !conversations) {
       dispatch(getUserByIdThunk(loggedInUser._id));
+      dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
       socket.emit("hello from client", { data: loggedInUser._id });
     }
-  }, [loggedInUser, entireUser]);
+  }, [loggedInUser, entireUser, conversations]);
 
   useEffect(() => {
     const handleFriendRequest = (data) => {
