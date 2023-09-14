@@ -10,12 +10,10 @@ import socket from "../../api/socket.js";
 import { getUserByIdThunk } from "../../redux/features/user/userThunks";
 
 const Dashboard = () => {
-  //useState setCat = false
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
-  const [chatOpen, setChatOpen] = useState(false);
-  console.log(chatOpen);
+  const [chatOpen, setChatOpen] = useState(null);
   useEffect(() => {
     if (loggedInUser?._id && !entireUser) {
       dispatch(getUserByIdThunk(loggedInUser._id));
@@ -69,7 +67,7 @@ const Dashboard = () => {
           borderRightWidth: "1px",
         }}
       >
-        <ChatBox />
+        <ChatBox chatOpen={chatOpen} />
       </div>
 
       <div
