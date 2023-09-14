@@ -12,7 +12,6 @@ function ConversationPreviewDetail({ conversation, setChatOpen }) {
   };
 
   console.log("From Conversation Preview ");
-  console.log(detailedLastMessageFrom[0]);
 
   return (
     <div

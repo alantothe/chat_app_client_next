@@ -74,7 +74,7 @@ const Dashboard = () => {
           borderRightWidth: "1px",
         }}
       >
-        <ChatBox chatOpen={chatOpen} />
+        <ChatBox chatOpen={chatOpen} entireUser={entireUser} />
       </div>
 
       <div

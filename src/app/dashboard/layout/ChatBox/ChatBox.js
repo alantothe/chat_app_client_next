@@ -2,16 +2,30 @@
 import React, { useState, createElement } from "react";
 import SendIcon from "@/assets/svg/send";
 import { UsersIcon } from "@heroicons/react/24/outline";
+import { sendMessage } from "@/api/messages/postRequest";
 
-function ChatBox({ chatOpen }) {
-  const [message, setMessage] = useState("");
+function ChatBox({ chatOpen, entireUser }) {
+  const [formData, setFormData] = useState({
+    senderId: entireUser ? entireUser._id : "",
+    recipientId: chatOpen ? chatOpen._id : "",
+    message: "",
+    img: "",
+  });
 
-  const handleChange = (e) => {
-    setMessage(e.target.value);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
+  console.log(formData);
 
-  console.log(chatOpen);
-
+  const handleSubmit = async () => {
+    try {
+      sendMessage(formData);
+    } catch (error) {}
+  };
   return (
     <div
       className="h-full text-white flex flex-col"
@@ -83,15 +97,17 @@ function ChatBox({ chatOpen }) {
       <footer className="flex w-full px-5 justify-center flex-shrink-0 mb-5">
         <div className="relative w-full px-3 h-12">
           <input
-            value={message}
+            name="message" // Add the name attribute to identify the field
+            value={formData.message} // Use formData's message property for the value
             onChange={handleChange}
             className={`w-full rounded py-2 bg-zinc-900 h-full pl-3 pr-12 placeholder-zinc-700 text-white mb-5`}
             placeholder="Message ..."
           />
           <div className="absolute inset-y-0 right-6 flex items-center">
             <SendIcon
+              onClick={handleSubmit}
               className={`h-5 w-5 ${
-                message ? "text-zinc-200" : "text-zinc-700"
+                formData.message ? "text-zinc-200" : "text-zinc-700"
               }`}
             />
           </div>
