@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Button from "@/components/Button.js";
 import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 
-function MainSideBar({ entireUser, conversations }) {
+function MainSideBar({ entireUser, conversations, setChatOpen }) {
   const [message, setMessage] = useState("");
   console.log("From Main Side Bar");
 
@@ -33,7 +33,11 @@ function MainSideBar({ entireUser, conversations }) {
       </div>
       {conversations
         ? conversations.map((convo, index) => (
-            <ConversationPreviewDetail conversation={convo} key={index} />
+            <ConversationPreviewDetail
+              setChatOpen={setChatOpen}
+              conversation={convo}
+              key={index}
+            />
           ))
         : null}
     </div>

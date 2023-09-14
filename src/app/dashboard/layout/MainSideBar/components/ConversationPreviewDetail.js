@@ -1,12 +1,26 @@
 import React from "react";
 
-function ConversationPreviewDetail({ conversation }) {
+function ConversationPreviewDetail({ conversation, setChatOpen }) {
   const { detailedLastMessageFrom } = conversation;
+
+  // truncate the string
+  const truncate = (str, num) => {
+    if (str.length <= num) {
+      return str;
+    }
+    return str.slice(0, num) + " ...";
+  };
+
   console.log("From Conversation Preview ");
-  console.log(detailedLastMessageFrom[0].firstName);
+  console.log(detailedLastMessageFrom[0]);
 
   return (
-    <div className="flex mx-6 my-4">
+    <div
+      onClick={() => {
+        setChatOpen(detailedLastMessageFrom[0]);
+      }}
+      className="flex mx-6 my-4"
+    >
       <img
         src={detailedLastMessageFrom[0].avatar}
         alt="Avatar"
@@ -19,13 +33,17 @@ function ConversationPreviewDetail({ conversation }) {
             {detailedLastMessageFrom[0].lastName}
           </h1>
         </div>
-        <p className=" text-zinc-700"> {conversation.lastMessage}</p>
+        <p className=" text-sm text-zinc-700">
+          {" "}
+          {truncate(conversation.lastMessage, 23)}
+        </p>
       </div>
     </div>
   );
 }
 
 export default ConversationPreviewDetail;
+
 {
   /* <img
 src={friend.avatar}

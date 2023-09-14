@@ -59,7 +59,11 @@ const Dashboard = () => {
         className="border-r border-opacity-25 border-white"
         style={{ flexBasis: "20.833333%", borderRightWidth: "1px" }}
       >
-        <MainSideBar conversations={conversations} entireUser={entireUser} />
+        <MainSideBar
+          setChatOpen={setChatOpen}
+          conversations={conversations}
+          entireUser={entireUser}
+        />
       </div>
 
       <div
