@@ -2,15 +2,17 @@
 
 import React, { useState } from "react";
 import Button from "@/components/Button.js";
+import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 
-function MainSideBar({ entireUser }) {
+function MainSideBar({ entireUser, conversations }) {
   const [message, setMessage] = useState("");
+  console.log("From Main Side Bar");
+
+  console.log(conversations);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
-
-  const conversation = "Conversation";
 
   return (
     <div
@@ -29,6 +31,11 @@ function MainSideBar({ entireUser }) {
         <Button text={"Direct Messages"} />
         <Button text={"Group Message"} />
       </div>
+      {conversations
+        ? conversations.map((convo, index) => (
+            <ConversationPreviewDetail conversation={convo} key={index} />
+          ))
+        : null}
     </div>
   );
 }

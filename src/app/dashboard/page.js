@@ -13,9 +13,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
-  const conversations = useSelector(
-    (state) => state.conversation.conversations
-  );
+  const conversations = useSelector((state) => state.conversation.conversation);
 
   const [chatOpen, setChatOpen] = useState(null);
   useEffect(() => {
@@ -61,7 +59,7 @@ const Dashboard = () => {
         className="border-r border-opacity-25 border-white"
         style={{ flexBasis: "20.833333%", borderRightWidth: "1px" }}
       >
-        <MainSideBar entireUser={entireUser} />
+        <MainSideBar conversations={conversations} entireUser={entireUser} />
       </div>
 
       <div
