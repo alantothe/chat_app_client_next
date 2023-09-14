@@ -35,13 +35,14 @@ function ChatBox({ chatOpen }) {
             ></div>
           </header>
 
-          <div className=" relative overflow-y-auto flex-grow flex-col items-center justify-start ml-6 ">
-            <div className="absolute bottom-0 ">
+          <div className=" relative overflow-y-auto flex-grow flex-col items-center justify-start ml-8 ">
+            {/* Start Of Convo Div */}
+            <div className="absolute bottom-0 mb-12 ">
               <div className="flex-col items-center ">
                 <img
                   src={chatOpen.avatar}
                   alt="Avatar"
-                  className="object-cover  w-14 h-14 rounded-full overflow-hidden"
+                  className="object-cover  w-24 h-24 rounded-full overflow-hidden"
                 />
                 <div className="flex">
                   <h1 className="text-xl ">{chatOpen.firstName}</h1>
