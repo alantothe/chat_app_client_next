@@ -6,9 +6,6 @@ import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 
 function MainSideBar({ entireUser, conversations, setChatOpen }) {
   const [message, setMessage] = useState("");
-  console.log("From Main Side Bar");
-
-  console.log(conversations);
 
   const handleChange = (e) => {
     setMessage(e.target.value);

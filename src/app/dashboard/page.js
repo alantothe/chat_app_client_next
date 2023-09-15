@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import socket from "../../api/socket.js";
 import { getUserByIdThunk } from "../../redux/features/user/userThunks";
 import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
+import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
@@ -16,6 +17,24 @@ const Dashboard = () => {
   const conversations = useSelector((state) => state.conversation.conversation);
 
   const [chatOpen, setChatOpen] = useState(null);
+  const [messageForm, setMessageForm] = useState({
+    members: [],
+  });
+  console.log(chatOpen);
+  useEffect(() => {
+    if (chatOpen) {
+      let membersArray = [chatOpen._id, loggedInUser._id];
+      console.log(membersArray);
+      // Immediately use the newly created array for dispatch
+      if (Array.isArray(membersArray) && membersArray.length > 1) {
+        dispatch(getMessagesThunk({ members: membersArray }));
+      }
+
+      // Now, update the state
+      setMessageForm({ members: membersArray });
+    }
+  }, [chatOpen]);
+
   useEffect(() => {
     if (loggedInUser?._id && !entireUser && !conversations) {
       dispatch(getUserByIdThunk(loggedInUser._id));

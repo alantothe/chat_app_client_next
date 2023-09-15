@@ -3,8 +3,10 @@ import React, { useState, createElement, useEffect } from "react";
 import SendIcon from "@/assets/svg/send";
 import { UsersIcon } from "@heroicons/react/24/outline";
 import { sendMessage } from "@/api/messages/postRequest";
-
+// import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
+import { useDispatch } from "react-redux";
 function ChatBox({ chatOpen, entireUser }) {
+  const dispatch = useDispatch();
   let senderId = entireUser ? entireUser._id : null;
   let recipientIds = chatOpen ? chatOpen._id : null;
   const [formData, setFormData] = useState({
@@ -13,17 +15,23 @@ function ChatBox({ chatOpen, entireUser }) {
     message: "",
     img: "",
   });
+  // const [getMessagesForm, setGetMessagesForm] = useState({
+  //   members: [],
+  // });
 
   useEffect(() => {
     let senderId = entireUser ? entireUser._id : null;
     let recipientIds = chatOpen ? chatOpen._id : null;
+    // let membersArray = [senderId, recipientIds];
+    // setGetMessagesForm({ members: membersArray });
+    // dispatch(getMessagesThunk(getMessagesForm));
 
     setFormData((prevState) => ({
       ...prevState,
       senderId: senderId,
       recipientIds: recipientIds,
     }));
-  }, [entireUser, chatOpen]);
+  }, [entireUser, chatOpen, recipientIds]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -32,7 +40,6 @@ function ChatBox({ chatOpen, entireUser }) {
       [name]: value,
     }));
   };
-  console.log(formData);
 
   const handleSubmit = async () => {
     try {

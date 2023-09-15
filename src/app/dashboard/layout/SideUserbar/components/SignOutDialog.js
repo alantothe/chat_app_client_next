@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { reset } from "@/redux/features/user/userSlice";
 import { resetConvos } from "@/redux/features/conversations/conversationSlice";
+import { resetActiveConversation } from "@/redux/features/messages/messagesSlice";
 import socket from "@/api/socket";
 
 export function SignOutDialog({ open, toggleDialog }) {
@@ -22,6 +23,7 @@ export function SignOutDialog({ open, toggleDialog }) {
     localStorage.clear();
     dispatch(reset());
     dispatch(resetConvos());
+    dispatch(resetActiveConversation());
     router.push("/login");
     toggleDialog();
   };

@@ -9,10 +9,8 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
     (member) => member._id !== loggedInId
   );
 
-  console.log(filteredMembers);
-  console.log(filteredDetailedMembers[0].avatar);
   const { avatar } = filteredDetailedMembers;
-  console.log(avatar);
+
   // truncate the string
   const truncate = (str, num) => {
     if (str.length <= num) {
@@ -20,8 +18,6 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
     }
     return str.slice(0, num) + " ...";
   };
-
-  console.log("From Conversation Preview ");
 
   return (
     <div

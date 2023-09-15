@@ -1,7 +1,6 @@
 import React from "react";
 
-function FriendDetail({ friend, setChatOpen }) {
-  //is CLicked? false --> true
+function FriendDetail({ friend, setChatOpen, _id }) {
   return (
     <div onClick={() => setChatOpen(friend)} className="flex my-3">
       <img

@@ -2,7 +2,7 @@ import React from "react";
 import FriendDetail from "./components/FriendDetail";
 
 function Friends({ entireUser, setChatOpen }) {
-  const { detailedFriends = [] } = entireUser; // Default to empty array if undefined (edge case?)
+  const { detailedFriends = [], _id } = entireUser; // Default to empty array if undefined (edge case?)
 
   return (
     <div
@@ -20,6 +20,7 @@ function Friends({ entireUser, setChatOpen }) {
             detailedFriends.length > 0 &&
             detailedFriends.map((friend, index) => (
               <FriendDetail
+                _id={_id}
                 setChatOpen={setChatOpen}
                 friend={friend}
                 key={index}

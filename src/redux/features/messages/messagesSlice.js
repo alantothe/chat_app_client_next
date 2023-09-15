@@ -1,24 +1,26 @@
 "use client";
 
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAllConversationByIdReducer } from "./conversationExtraReducers";
+import { getMessagesReducer } from "./messageExtraReducers";
 
 const initialState = {
-  conversations: undefined,
+  members: undefined,
+  allMessages: undefined,
+  isOpen: false,
   loading: false,
   error: null,
 };
 
-export const conversationSlice = createSlice({
-  name: "conversation",
+export const activeConversationSlice = createSlice({
+  name: "activeConversation",
   initialState,
   reducers: {
-    resetConvos: () => initialState,
+    resetActiveConversation: () => initialState,
   },
   extraReducers: (builder) => {
-    fetchAllConversationByIdReducer(builder);
+    getMessagesReducer(builder);
   },
 });
 
-export const { resetConvos } = conversationSlice.actions;
-export default conversationSlice.reducer;
+export const { resetActiveConversation } = activeConversationSlice.actions;
+export default activeConversationSlice.reducer;
