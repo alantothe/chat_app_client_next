@@ -12,11 +12,9 @@ function ChatBox({ chatOpen, entireUser }) {
   );
   const messageGroups = groupConsecutiveMessages(allMessages);
 
-  console.log(allMessages);
   const detailedSenders = allMessages.map(
     (message) => message.detailedSender[0]
   );
-  console.log(detailedSenders);
 
   let senderId = entireUser ? entireUser._id : null;
   let recipientIds = chatOpen ? chatOpen._id : null;

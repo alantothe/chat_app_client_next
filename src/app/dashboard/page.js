@@ -15,6 +15,7 @@ const Dashboard = () => {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
   const conversations = useSelector((state) => state.conversation.conversation);
+  const [lastUpdatedConversation, setLastUpdatedConversation] = useState(null);
 
   const [chatOpen, setChatOpen] = useState(null);
   const [messageForm, setMessageForm] = useState({
@@ -23,16 +24,16 @@ const Dashboard = () => {
   useEffect(() => {
     if (chatOpen) {
       let membersArray = [chatOpen._id, loggedInUser._id];
-      console.log(membersArray);
-      // Immediately use the newly created array for dispatch
+
+      // use the newly created array for dispatch
       if (Array.isArray(membersArray) && membersArray.length > 1) {
         dispatch(getMessagesThunk({ members: membersArray }));
       }
 
-      // Now, update the state
+      // update the state
       setMessageForm({ members: membersArray });
     }
-  }, [chatOpen]);
+  }, [chatOpen, lastUpdatedConversation]);
 
   useEffect(() => {
     if (loggedInUser?._id && !entireUser && !conversations) {
@@ -55,15 +56,30 @@ const Dashboard = () => {
         dispatch(getUserByIdThunk(loggedInUser._id));
       }
     };
+    const handleNewMessage = (data) => {
+      if (
+        Array.isArray(data.data.members) &&
+        data.data.members.includes(loggedInUser._id)
+      ) {
+        console.log("Logged-in user is in the members array");
+        dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
+
+        // Update the lastUpdatedConversation state
+        setLastUpdatedConversation(data.data._id);
+      }
+    };
 
     socket.on("friend request accepted", handleAccept);
 
     socket.on("friend request sent", handleFriendRequest);
 
+    socket.on("message sent", handleNewMessage);
+
     // remove the listener when the component unmounts
     return () => {
       socket.off("friend request sent", handleFriendRequest);
       socket.off("friend request accepted", handleAccept);
+      socket.off("message sent", handleNewMessage);
     };
   }, [loggedInUser, dispatch]);
 
