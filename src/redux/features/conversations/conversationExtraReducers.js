@@ -10,7 +10,7 @@ export const fetchAllConversationByIdReducer = (builder) => {
     })
     .addCase(fetchAllConversationByIdThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
-      console.log("payload:", action.payload);
+      // console.log("payload:", action.payload);
       state.conversation = action.payload.conversation;
     })
     .addCase(fetchAllConversationByIdThunk.rejected, (state, action) => {

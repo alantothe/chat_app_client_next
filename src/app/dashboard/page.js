@@ -20,7 +20,6 @@ const Dashboard = () => {
   const [messageForm, setMessageForm] = useState({
     members: [],
   });
-  console.log(chatOpen);
   useEffect(() => {
     if (chatOpen) {
       let membersArray = [chatOpen._id, loggedInUser._id];

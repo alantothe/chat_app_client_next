@@ -3,14 +3,20 @@ import React, { useState, createElement, useEffect } from "react";
 import SendIcon from "@/assets/svg/send";
 import { UsersIcon } from "@heroicons/react/24/outline";
 import { sendMessage } from "@/api/messages/postRequest";
-
 import { useDispatch, useSelector } from "react-redux";
+import MessageDetail from "./components/messageDetail";
 function ChatBox({ chatOpen, entireUser }) {
   const dispatch = useDispatch();
   const allMessages = useSelector(
     (state) => state.activeConversation?.allMessages?.messages || []
   );
+
   console.log(allMessages);
+  const detailedSenders = allMessages.map(
+    (message) => message.detailedSender[0]
+  );
+  console.log(detailedSenders);
+
   let senderId = entireUser ? entireUser._id : null;
   let recipientIds = chatOpen ? chatOpen._id : null;
   const [formData, setFormData] = useState({
@@ -87,6 +93,11 @@ function ChatBox({ chatOpen, entireUser }) {
                   {chatOpen.firstName} {chatOpen.lastName}
                   {}{" "}
                 </h1>
+                <div className="mt-10">
+                  {allMessages.map((message, index) => (
+                    <MessageDetail message={message} key={index} />
+                  ))}
+                </div>
               </div>
             </div>
           </div>

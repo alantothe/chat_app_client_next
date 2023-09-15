@@ -10,7 +10,7 @@ export const getMessagesReducer = (builder) => {
     })
     .addCase(getMessagesThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
-      console.log("payload:", action.payload);
+      // console.log("payload:", action.payload);
       state.allMessages = action.payload;
     })
     .addCase(getMessagesThunk.rejected, (state, action) => {

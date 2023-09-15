@@ -12,7 +12,6 @@ export const sendMessage = async (formData) => {
 export const getMessages = async (array) => {
   try {
     const response = await api.post("messages/fetch-messages", array);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("Error: Fetching Messages.", error);
