@@ -34,6 +34,7 @@ function MainSideBar({ entireUser, conversations, setChatOpen }) {
       {conversations
         ? conversations.map((convo, index) => (
             <ConversationPreviewDetail
+              entireUser={entireUser}
               setChatOpen={setChatOpen}
               conversation={convo}
               key={index}

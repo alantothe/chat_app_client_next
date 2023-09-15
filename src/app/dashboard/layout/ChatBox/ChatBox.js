@@ -1,16 +1,29 @@
 "use client";
-import React, { useState, createElement } from "react";
+import React, { useState, createElement, useEffect } from "react";
 import SendIcon from "@/assets/svg/send";
 import { UsersIcon } from "@heroicons/react/24/outline";
 import { sendMessage } from "@/api/messages/postRequest";
 
 function ChatBox({ chatOpen, entireUser }) {
+  let senderId = entireUser ? entireUser._id : null;
+  let recipientIds = chatOpen ? chatOpen._id : null;
   const [formData, setFormData] = useState({
-    senderId: entireUser ? entireUser._id : "",
-    recipientId: chatOpen ? chatOpen._id : "",
+    senderId: senderId,
+    recipientIds: recipientIds,
     message: "",
     img: "",
   });
+
+  useEffect(() => {
+    let senderId = entireUser ? entireUser._id : null;
+    let recipientIds = chatOpen ? chatOpen._id : null;
+
+    setFormData((prevState) => ({
+      ...prevState,
+      senderId: senderId,
+      recipientIds: recipientIds,
+    }));
+  }, [entireUser, chatOpen]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
