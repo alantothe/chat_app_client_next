@@ -6,7 +6,6 @@ import { getMessagesReducer } from "./messageExtraReducers";
 const initialState = {
   members: undefined,
   allMessages: undefined,
-  isOpen: false,
   loading: false,
   error: null,
 };
