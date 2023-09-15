@@ -10,6 +10,7 @@ function ChatBox({ chatOpen, entireUser }) {
   const allMessages = useSelector(
     (state) => state.activeConversation?.allMessages?.messages || []
   );
+  const messageGroups = groupConsecutiveMessages(allMessages);
 
   console.log(allMessages);
   const detailedSenders = allMessages.map(
@@ -36,6 +37,31 @@ function ChatBox({ chatOpen, entireUser }) {
       recipientIds: recipientIds,
     }));
   }, [entireUser, chatOpen, recipientIds]);
+
+  function groupConsecutiveMessages(messages) {
+    const grouped = [];
+    let currentGroup = null;
+
+    messages.forEach((message) => {
+      if (currentGroup && currentGroup.senderId === message.senderId) {
+        currentGroup.messages.push(message);
+      } else {
+        if (currentGroup) {
+          grouped.push(currentGroup);
+        }
+        currentGroup = {
+          senderId: message.senderId,
+          messages: [message],
+        };
+      }
+    });
+
+    if (currentGroup) {
+      grouped.push(currentGroup);
+    }
+
+    return grouped;
+  }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -75,7 +101,7 @@ function ChatBox({ chatOpen, entireUser }) {
 
           <div className=" relative overflow-y-auto flex-grow flex-col items-center justify-start ml-8 ">
             {/* Start Of Convo Div */}
-            <div className="absolute bottom-0 mb-12 ">
+            <div className="absolute bottom-0 mb-3 ">
               <div className="flex-col items-center ">
                 <img
                   src={chatOpen.avatar}
@@ -94,8 +120,12 @@ function ChatBox({ chatOpen, entireUser }) {
                   {}{" "}
                 </h1>
                 <div className="mt-10">
-                  {allMessages.map((message, index) => (
-                    <MessageDetail message={message} key={index} />
+                  {messageGroups.map((group, groupIndex) => (
+                    <MessageDetail
+                      messages={group.messages}
+                      key={groupIndex}
+                      showAvatar={true}
+                    />
                   ))}
                 </div>
               </div>

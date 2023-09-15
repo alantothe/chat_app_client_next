@@ -42,30 +42,37 @@ function formatDate(dateStr) {
   return `${monthNames[messageMonth]} ${messageDay}, ${messageYear} at ${hours}:${minutes}`;
 }
 
-function MessageDetail({ message }) {
-  console.log("Test log");
-
-  const { detailedSender, createdAt } = message;
+function MessageDetail({ messages, showAvatar }) {
+  const latestMessage = messages[messages.length - 1];
+  const { detailedSender, createdAt } = latestMessage;
   const { avatar, firstName, lastName } = detailedSender[0];
   const formattedDate = formatDate(createdAt);
-  console.log(avatar);
-  console.log(firstName);
 
   return (
     <div className="flex my-3">
-      <img
-        src={avatar}
-        alt="Avatar"
-        className="object-cover w-14 h-14 rounded-full overflow-hidden flex-shrink-0"
-      />
-      <div className="flex-col ml-4 mb-5">
+      {showAvatar && (
+        <img
+          src={avatar}
+          alt="Avatar"
+          className="object-cover w-14 h-14 rounded-full overflow-hidden flex-shrink-0"
+        />
+      )}
+      <div className="flex-col ml-4">
         <div className="flex">
-          <h1 className=" text-lg font-bold">{firstName}</h1>{" "}
-          <h1 className="ml-1 text-lg font-bold ">{lastName}</h1>
-          <h1 className="ml-5 text-sm text-zinc-700">{formattedDate}</h1>
+          {showAvatar && (
+            <>
+              <h1 className="text-lg font-bold">{firstName}</h1>
+              <h1 className="ml-1 text-lg font-bold">{lastName}</h1>
+              <h1 className="ml-2 mt-2 text-zinc-700 text-xs align-bottom">
+                {formattedDate}
+              </h1>
+            </>
+          )}
         </div>
         <div>
-          <p>{message.message} </p>
+          {messages.map((message, index) => (
+            <p key={index}>{message.message}</p>
+          ))}
         </div>
       </div>
     </div>
