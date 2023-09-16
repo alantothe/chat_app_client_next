@@ -12,9 +12,10 @@ import { useState } from "react";
 export function UserSelector({ users, onUserSelect, isOpen, toggleOpen }) {
   const [selectedName, setSelectedName] = useState("");
 
-  const handleSelect = (name, _id) => {
-    setSelectedName(name);
-    if (onUserSelect) onUserSelect(_id);
+  const handleSelect = (_id, firstName, lastName) => {
+    const fullName = `${firstName} ${lastName}`;
+    setSelectedName(fullName);
+    if (onUserSelect) onUserSelect(_id, fullName); // pass _id and full name
     toggleOpen(false); // Close the dialog upon selection
   };
 
@@ -31,7 +32,10 @@ export function UserSelector({ users, onUserSelect, isOpen, toggleOpen }) {
         <DialogHeader>Select a user</DialogHeader>
         <DialogBody divider className="max-h-[20rem] overflow-y-auto">
           {users.map(({ _id, firstName, lastName, avatar }) => (
-            <ListItem key={_id} onClick={() => handleSelect(firstName, _id)}>
+            <ListItem
+              key={_id}
+              onClick={() => handleSelect(_id, firstName, lastName)}
+            >
               <ListItemPrefix>
                 <Avatar
                   variant="circular"
