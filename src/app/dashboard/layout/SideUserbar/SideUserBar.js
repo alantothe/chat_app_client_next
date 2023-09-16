@@ -12,12 +12,14 @@ import { Tooltip, Badge, IconButton } from "@material-tailwind/react";
 import { SignOutDialog } from "./components/SignOutDialog";
 import { AddFriendDialog } from "./components/AddFriend/AddFriendDialog";
 import { Inbox } from "./components/Inbox/Inbox";
-import { GroupMessageDialog } from "./components/GroupMessage.js/groupMessageDialog";
+import { GroupMessageDialog } from "./components/GroupMessage.js/GroupMessageDialog";
 const SideUserBar = ({ entireUser }) => {
   let [dialogOpen, setDialogOpen] = useState(false);
   let [addDialogOpen, setAddDialogOpen] = useState(false);
   let [inboxDialogOpen, setInboxDialogOpen] = useState(false);
   let [groupDialogOpen, setGroupDialogOpen] = useState(false);
+  //for group dialog
+  let [dropdownOpen, setDropdownOpen] = useState(false);
   const [badgeCount, setBadgeCount] = useState(null);
   const { friendRequestsReceived = [] } = entireUser || {};
 

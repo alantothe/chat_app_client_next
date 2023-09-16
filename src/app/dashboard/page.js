@@ -10,6 +10,7 @@ import socket from "../../api/socket.js";
 import { getUserByIdThunk } from "../../redux/features/user/userThunks";
 import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
 import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
+import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
@@ -39,6 +40,7 @@ const Dashboard = () => {
     if (loggedInUser?._id && !entireUser && !conversations) {
       dispatch(getUserByIdThunk(loggedInUser._id));
       dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
+      dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));
       socket.emit("hello from client", { data: loggedInUser._id });
     }
   }, [loggedInUser, entireUser, conversations]);
