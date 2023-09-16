@@ -6,18 +6,18 @@ import {
   UserCircleIcon,
   UserPlusIcon,
   InboxArrowDownIcon,
+  ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/outline";
 import { Tooltip, Badge, IconButton } from "@material-tailwind/react";
 import { SignOutDialog } from "./components/SignOutDialog";
 import { AddFriendDialog } from "./components/AddFriend/AddFriendDialog";
 import { Inbox } from "./components/Inbox/Inbox";
-// import { useSelector, useDispatch } from "react-redux";
-// import { getUserByIdThunk } from "@/redux/features/user/userThunks";
+import { GroupMessageDialog } from "./components/GroupMessage.js/groupMessageDialog";
 const SideUserBar = ({ entireUser }) => {
-  // const dispatch = useDispatch();
   let [dialogOpen, setDialogOpen] = useState(false);
   let [addDialogOpen, setAddDialogOpen] = useState(false);
   let [inboxDialogOpen, setInboxDialogOpen] = useState(false);
+  let [groupDialogOpen, setGroupDialogOpen] = useState(false);
   const [badgeCount, setBadgeCount] = useState(null);
   const { friendRequestsReceived = [] } = entireUser || {};
 
@@ -28,6 +28,13 @@ const SideUserBar = ({ entireUser }) => {
       return !prev;
     });
   };
+  const toggleGroupDialog = () => {
+    setGroupDialogOpen((prev) => {
+      console.log("Toggling groupDialogOpen from", prev, "to", !prev);
+      return !prev;
+    });
+  };
+
   useEffect(() => {
     setBadgeCount(friendRequestsReceived.length);
   }, [friendRequestsReceived]);
@@ -54,6 +61,16 @@ const SideUserBar = ({ entireUser }) => {
             onClick: toggleAddDialog,
           }
         )}
+      </Tooltip>
+      <Tooltip
+        content="Create Group Chat"
+        placement="right"
+        className="bg-zinc-700 mt-1"
+      >
+        {createElement(ChatBubbleLeftRightIcon, {
+          className: "h-14 w-14 pt-3 cursor -pointer",
+          onClick: toggleGroupDialog,
+        })}
       </Tooltip>
       <Tooltip
         content="Profile Page"
@@ -104,6 +121,14 @@ const SideUserBar = ({ entireUser }) => {
           entireUser={entireUser}
           open={addDialogOpen}
           toggleAddDialog={toggleAddDialog}
+        />
+      ) : null}
+
+      {entireUser ? (
+        <GroupMessageDialog
+          entireUser={entireUser}
+          open={groupDialogOpen}
+          toggleGroupDialog={toggleGroupDialog}
         />
       ) : null}
 
