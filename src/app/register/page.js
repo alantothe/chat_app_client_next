@@ -19,8 +19,7 @@ const RegisterPage = () => {
     avatar: "",
   });
 
-  console.log(formData);
-
+ 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/*",
     onDrop: async (acceptedFiles) => {

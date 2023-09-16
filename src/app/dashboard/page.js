@@ -57,6 +57,7 @@ const Dashboard = () => {
       }
     };
     const handleNewMessage = (data) => {
+      console.log(data.data.members);
       if (
         Array.isArray(data.data.members) &&
         data.data.members.includes(loggedInUser._id)
@@ -65,7 +66,9 @@ const Dashboard = () => {
         dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
 
         // Update the lastUpdatedConversation state
+        dispatch(getMessagesThunk({ members: data.data.members }));
         setLastUpdatedConversation(data.data._id);
+        console.log(data.data._id);
       }
     };
 

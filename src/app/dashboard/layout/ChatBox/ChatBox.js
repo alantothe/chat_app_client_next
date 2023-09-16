@@ -4,7 +4,8 @@ import SendIcon from "@/assets/svg/send";
 import { UsersIcon } from "@heroicons/react/24/outline";
 import { sendMessage } from "@/api/messages/postRequest";
 import { useDispatch, useSelector } from "react-redux";
-import MessageDetail from "./components/messageDetail";
+import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
+import MessageDetail from "./components/MessageDetail";
 function ChatBox({ chatOpen, entireUser }) {
   const dispatch = useDispatch();
   const allMessages = useSelector(
