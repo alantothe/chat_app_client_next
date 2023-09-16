@@ -1,11 +1,9 @@
-"use client";
-
 import React, { useState } from "react";
-import Button from "@/components/Button.js";
 import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 
 function MainSideBar({ entireUser, conversations, setChatOpen }) {
   const [message, setMessage] = useState("");
+  const [activeMode, setActiveMode] = useState("direct");
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -19,16 +17,33 @@ function MainSideBar({ entireUser, conversations, setChatOpen }) {
       <header className="flex justify-center h-24 relative">
         <input
           className="bg-zinc-800 placeholder-zinc-600 h-12 w-11/12 mt-7 mb-2 rounded"
-          placeholder="    Serach for Conversation ..."
+          placeholder="    Search for Conversation ..."
         ></input>
         <div className="absolute bottom-0 left-0 right-0 w-11/12 mx-auto border-b border-white border-opacity-20"></div>
       </header>
 
       <div className="mt-3  flex justify-between mx-5 ">
-        <Button text={"Direct Messages"} />
-        <Button text={"Group Message"} />
+        <button
+          className="button-class"
+          onClick={() => {
+            console.log("Direct Messages button clicked!");
+            setActiveMode("direct");
+          }}
+        >
+          Direct Messages
+        </button>
+        <button
+          className="button-class"
+          onClick={() => {
+            console.log("Group Message button clicked!");
+            setActiveMode("group");
+          }}
+        >
+          Group Message
+        </button>
       </div>
-      {conversations
+
+      {activeMode === "direct" && conversations
         ? conversations.map((convo, index) => (
             <ConversationPreviewDetail
               entireUser={entireUser}
@@ -38,6 +53,7 @@ function MainSideBar({ entireUser, conversations, setChatOpen }) {
             />
           ))
         : null}
+      {activeMode === "group" && <div>Group convos here</div>}
     </div>
   );
 }
