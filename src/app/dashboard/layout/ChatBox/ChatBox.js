@@ -86,22 +86,21 @@ function ChatBox({ chatOpen, entireUser }) {
             <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-start ml-6">
               {/* Render Avatars */}
               {chatOpen.map((member, index) => (
-                <img
-                  key={index}
-                  src={member.avatar}
-                  alt="Avatar"
-                  className="object-cover w-14 h-14 rounded-full overflow-hidden mr-2"
-                />
+                <div className="flex">
+                  <img
+                    key={index}
+                    src={member.avatar}
+                    alt="Avatar"
+                    className="object-cover w-14 h-14 rounded-full overflow-hidden mr-2"
+                  />
+                </div>
               ))}
 
-              {/*  First Names */}
+              {/* Render Full Names */}
               <h1 className="ml-3 mt-2 text-xl ">
-                {chatOpen.map((member) => member.firstName).join(", ")}
-              </h1>
-
-              {/*  Last Names */}
-              <h1 className="ml-1 mt-2 text-xl">
-                {chatOpen.map((member) => member.lastName).join(", ")}
+                {chatOpen
+                  .map((member) => `${member.firstName} ${member.lastName}`)
+                  .join(", ")}
               </h1>
             </div>
             <div
@@ -113,11 +112,11 @@ function ChatBox({ chatOpen, entireUser }) {
           <div className=" relative overflow-y-auto flex-grow flex-col items-center justify-start ml-8 ">
             {/* Start Of Convo Div */}
             <div className="absolute bottom-0 mb-3 ">
-              <div className="flex-col items-center ">
+              <div className="flex items-center ">
                 {/* Display avatars and names for the Start of the Convo. */}
                 {chatOpen.map((member, index) => (
                   // group a list without node
-                  <React.Fragment key={index}>
+                  <React.Fragment className="flex" key={index}>
                     <img
                       src={member.avatar}
                       alt="Avatar"
