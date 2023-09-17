@@ -4,12 +4,9 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
   const { members = [], detailedMembers = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
 
-  const filteredMembers = members.filter((memberId) => memberId !== loggedInId);
   const filteredDetailedMembers = detailedMembers.filter(
     (member) => member._id !== loggedInId
   );
-
-  const { avatar } = filteredDetailedMembers;
 
   // truncate the string
   const truncate = (str, num) => {
@@ -22,7 +19,7 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
   return (
     <div
       onClick={() => {
-        setChatOpen(filteredDetailedMembers[0]);
+        setChatOpen(filteredDetailedMembers);
       }}
       className="flex mx-6 my-4"
     >
@@ -48,13 +45,3 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
 }
 
 export default ConversationPreviewDetail;
-
-{
-  /* <img
-src={friend.avatar}
-alt="Avatar"
-className="object-cover  w-12 h-12 rounded-full overflow-hidden"
-/>
-<h1 className="ml-3 mt-2">{friend.firstName}</h1>
-<h1 className="ml-1 mt-2">{friend.lastName}</h1> */
-}

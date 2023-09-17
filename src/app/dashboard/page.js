@@ -16,12 +16,16 @@ const Dashboard = () => {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
   const conversations = useSelector((state) => state.conversation.conversation);
+  const group = useSelector(
+    (state) => state.groupConversation.groupConversations
+  );
   const [lastUpdatedConversation, setLastUpdatedConversation] = useState(null);
 
   const [chatOpen, setChatOpen] = useState(null);
   const [messageForm, setMessageForm] = useState({
     members: [],
   });
+
   useEffect(() => {
     if (chatOpen) {
       let membersArray = [chatOpen._id, loggedInUser._id];
@@ -38,9 +42,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (loggedInUser?._id && !entireUser && !conversations) {
+      console.log(group);
       dispatch(getUserByIdThunk(loggedInUser._id));
       dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
       dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));
+
       socket.emit("hello from client", { data: loggedInUser._id });
     }
   }, [loggedInUser, entireUser, conversations]);
@@ -102,6 +108,7 @@ const Dashboard = () => {
           setChatOpen={setChatOpen}
           conversations={conversations}
           entireUser={entireUser}
+          group={group}
         />
       </div>
 

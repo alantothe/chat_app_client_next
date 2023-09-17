@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
+import GroupConversationDetail from "./components/GroupConversationDetail";
 
-function MainSideBar({ entireUser, conversations, setChatOpen }) {
+function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
   const [message, setMessage] = useState("");
   const [activeMode, setActiveMode] = useState("direct");
+  console.log(group);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
@@ -53,7 +55,16 @@ function MainSideBar({ entireUser, conversations, setChatOpen }) {
             />
           ))
         : null}
-      {activeMode === "group" && <div>Group convos here</div>}
+      {activeMode === "group" && group
+        ? group.map((convo, index) => (
+            <GroupConversationDetail
+              entireUser={entireUser}
+              setChatOpen={setChatOpen}
+              conversation={convo}
+              key={index}
+            />
+          ))
+        : null}
     </div>
   );
 }
