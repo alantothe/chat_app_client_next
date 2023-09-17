@@ -1,7 +1,7 @@
 import React from "react";
 
 function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
-  const { members = [], detailedMembers = [] } = conversation;
+  const { detailedMembers = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
 
   const filteredDetailedMembers = detailedMembers.filter(
@@ -23,20 +23,30 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
       }}
       className="flex mx-6 my-4"
     >
-      <img
-        src={filteredDetailedMembers[0].avatar}
-        alt="Avatar"
-        className="object-cover  w-16 h-16 rounded-full overflow-hidden"
-      />
+      {/* Avatars Display */}
+      {filteredDetailedMembers.map((member, index) => (
+        <img
+          key={index}
+          src={member.avatar}
+          alt="Avatar"
+          className="object-cover w-16 h-16 rounded-full overflow-hidden mr-2"
+        />
+      ))}
+
       <div className="flex-col ml-3 mt-1">
         <div className="flex">
-          <h1 className="text-xl">{filteredDetailedMembers[0].firstName}</h1>
+          <h1 className="text-xl">
+            {filteredDetailedMembers
+              .map((member) => member.firstName)
+              .join(", ")}
+          </h1>
           <h1 className="ml-2 text-xl">
-            {filteredDetailedMembers[0].lastName}
+            {filteredDetailedMembers
+              .map((member) => member.lastName)
+              .join(", ")}
           </h1>
         </div>
         <p className=" text-sm text-zinc-700">
-          {" "}
           {truncate(conversation.lastMessage, 23)}
         </p>
       </div>

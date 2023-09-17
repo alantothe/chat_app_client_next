@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { reset } from "@/redux/features/user/userSlice";
 import { resetConvos } from "@/redux/features/conversations/conversationSlice";
 import { resetActiveConversation } from "@/redux/features/messages/messagesSlice";
+import { resetGroupConvos } from "@/redux/features/groupConversations/groupConversationSlice";
 import socket from "@/api/socket";
 
 export function SignOutDialog({ open, toggleDialog }) {
@@ -24,6 +25,7 @@ export function SignOutDialog({ open, toggleDialog }) {
     dispatch(reset());
     dispatch(resetConvos());
     dispatch(resetActiveConversation());
+    dispatch(resetGroupConvos());
     router.push("/login");
     toggleDialog();
   };

@@ -21,24 +21,31 @@ const Dashboard = () => {
   );
   const [lastUpdatedConversation, setLastUpdatedConversation] = useState(null);
 
-  const [chatOpen, setChatOpen] = useState(null);
+  const [chatOpen, setChatOpen] = useState([]);
+
   const [messageForm, setMessageForm] = useState({
     members: [],
   });
 
   useEffect(() => {
-    if (chatOpen) {
-      let membersArray = [chatOpen._id, loggedInUser._id];
+    console.log("chatOpen updated:", chatOpen);
+  }, [chatOpen]);
 
-      // use the newly created array for dispatch
+  useEffect(() => {
+    if (chatOpen && chatOpen.length > 0 && loggedInUser && loggedInUser._id) {
+      // grab _id(s) from each user object in chatOpen
+      let idsFromChatOpen = chatOpen.map((user) => user._id);
+
+      //spread
+      let membersArray = [...idsFromChatOpen, loggedInUser._id];
+
       if (Array.isArray(membersArray) && membersArray.length > 1) {
         dispatch(getMessagesThunk({ members: membersArray }));
       }
 
-      // update the state
       setMessageForm({ members: membersArray });
     }
-  }, [chatOpen, lastUpdatedConversation]);
+  }, [chatOpen, loggedInUser, lastUpdatedConversation]);
 
   useEffect(() => {
     if (loggedInUser?._id && !entireUser && !conversations) {

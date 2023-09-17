@@ -8,34 +8,30 @@ import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 import MessageDetail from "./components/MessageDetail";
 function ChatBox({ chatOpen, entireUser }) {
   const dispatch = useDispatch();
+  console.log("chatOpen:", chatOpen);
+
   const allMessages = useSelector(
     (state) => state.activeConversation?.allMessages?.messages || []
   );
   const messageGroups = groupConsecutiveMessages(allMessages);
 
-  const detailedSenders = allMessages.map(
-    (message) => message.detailedSender[0]
-  );
-
-  let senderId = entireUser ? entireUser._id : null;
-  let recipientIds = chatOpen ? chatOpen._id : null;
   const [formData, setFormData] = useState({
-    senderId: senderId,
-    recipientIds: recipientIds,
+    senderId: "",
+    recipientIds: [],
     message: "",
     img: "",
   });
 
   useEffect(() => {
     let senderId = entireUser ? entireUser._id : null;
-    let recipientIds = chatOpen ? chatOpen._id : null;
+    let recipientIds = chatOpen ? chatOpen.map((member) => member._id) : [];
 
     setFormData((prevState) => ({
       ...prevState,
       senderId: senderId,
       recipientIds: recipientIds,
     }));
-  }, [entireUser, chatOpen, recipientIds]);
+  }, [entireUser, chatOpen]);
 
   function groupConsecutiveMessages(messages) {
     const grouped = [];
@@ -71,10 +67,12 @@ function ChatBox({ chatOpen, entireUser }) {
   };
 
   const handleSubmit = async () => {
+    console.log("Sending message with data:", formData);
     try {
       sendMessage(formData);
     } catch (error) {}
   };
+
   return (
     <div
       className="h-full text-white flex flex-col"
