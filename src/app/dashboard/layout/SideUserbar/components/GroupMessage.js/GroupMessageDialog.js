@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import { UserSelector } from "./UserSelector";
 import { sendMessage } from "@/api/messages/postRequest";
 
+import { fetchGroupConversationById } from "@/api/conversations/getRequests";
+
 export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
   const userFriends = useSelector(
     (state) => state.user.entireUser.detailedFriends
@@ -33,7 +35,6 @@ export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
       recipientIds: userIds,
     }));
   }, [selectedUsers]);
-  console.log(formData);
 
   const handleUserSelect = (userId, userFullName) => {
     // check if the user is already selected
@@ -43,7 +44,7 @@ export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
           ...prevUsers,
           { _id: userId, fullName: userFullName },
         ];
-        console.log(updatedUsers);
+
         return updatedUsers;
       });
     }
@@ -56,6 +57,7 @@ export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
 
   const handleSendMessage = () => {
     sendMessage(formData);
+    fetchGroupConversationById(entireUser._id);
   };
 
   return (

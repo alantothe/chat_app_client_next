@@ -9,8 +9,9 @@ import { useSelector, useDispatch } from "react-redux";
 import socket from "../../api/socket.js";
 import { getUserByIdThunk } from "../../redux/features/user/userThunks";
 import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
-import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
+import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
+import { seenBy } from "@/api/conversations/patchRequests";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
@@ -44,6 +45,7 @@ const Dashboard = () => {
       }
 
       setMessageForm({ members: membersArray });
+      console.log(chatOpen);
     }
   }, [chatOpen, loggedInUser, lastUpdatedConversation]);
 
@@ -79,10 +81,12 @@ const Dashboard = () => {
       ) {
         console.log("Logged-in user is in the members array");
         dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
+        dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));
 
         // Update the lastUpdatedConversation state
-        dispatch(getMessagesThunk({ members: data.data.members }));
+
         setLastUpdatedConversation(data.data._id);
+
         console.log(data.data._id);
       }
     };

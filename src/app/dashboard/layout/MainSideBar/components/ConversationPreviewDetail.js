@@ -1,8 +1,26 @@
 import React from "react";
+import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
+import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
+import { useSelector, useDispatch } from "react-redux";
+import { seenBy } from "@/api/conversations/patchRequests";
 
 function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
+  const dispatch = useDispatch();
   const { detailedMembers = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
+
+  const handleConversationClick = () => {
+    const updatedSeenByForm = {
+      _id: loggedInId,
+      conversationId: conversation._id,
+    };
+
+    // Send the seenBy request
+    seenBy(updatedSeenByForm);
+
+    // Set the chat as open
+    setChatOpen(filteredDetailedMembers);
+  };
 
   const filteredDetailedMembers = detailedMembers.filter(
     (member) => member._id !== loggedInId
@@ -19,7 +37,7 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
   return (
     <div
       onClick={() => {
-        setChatOpen(filteredDetailedMembers);
+        handleConversationClick();
       }}
       className="flex mx-6 my-4"
     >

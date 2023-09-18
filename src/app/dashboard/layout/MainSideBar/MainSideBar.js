@@ -1,16 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 import GroupConversationDetail from "./components/GroupConversationDetail";
+import { Badge, Button } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
 
 function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
   const [message, setMessage] = useState("");
   const [activeMode, setActiveMode] = useState("direct");
-  console.log(group);
+  const _id = useSelector((state) => state.user.loggedInUser?._id);
+  console.log(conversations);
+
+  const unreadGroup = useSelector(
+    (state) => state.groupConversation.groupConversations
+  );
+  const unread = useSelector((state) => state.conversation.conversation);
+
+  const unreadCount = unread
+    ? unread.filter((conversation) => {
+        return !conversation.lastSeenBy.some((seen) => seen.userId === _id);
+      }).length
+    : 0;
+
+  const unreadGroupCount = unreadGroup
+    ? unreadGroup.filter((conversation) => {
+        return !conversation.lastSeenBy.some((seen) => seen.userId === _id);
+      }).length
+    : 0;
+
+  useEffect(() => {
+    console.log(unread);
+    console.log(unreadCount);
+    console.log(unreadGroupCount);
+  }, [unreadGroupCount, unread]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
-
   return (
     <div
       className="h-full text-white flex-col items-center justify-center"
@@ -25,24 +50,33 @@ function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
       </header>
 
       <div className="mt-3  flex justify-between mx-5 ">
-        <button
-          className="button-class"
-          onClick={() => {
-            console.log("Direct Messages button clicked!");
-            setActiveMode("direct");
-          }}
+        <Badge content={unreadCount} invisible={unreadCount === 0} withBorder>
+          <Button
+            className="button-class"
+            onClick={() => {
+              console.log("Direct Messages button clicked!");
+              setActiveMode("direct");
+            }}
+          >
+            Direct Messages
+          </Button>
+        </Badge>
+
+        <Badge
+          content={unreadGroupCount}
+          invisible={unreadGroupCount === 0}
+          withBorder
         >
-          Direct Messages
-        </button>
-        <button
-          className="button-class"
-          onClick={() => {
-            console.log("Group Message button clicked!");
-            setActiveMode("group");
-          }}
-        >
-          Group Message
-        </button>
+          <Button
+            className="button-class"
+            onClick={() => {
+              console.log("Group Message button clicked!");
+              setActiveMode("group");
+            }}
+          >
+            Group Message
+          </Button>
+        </Badge>
       </div>
 
       {activeMode === "direct" && conversations

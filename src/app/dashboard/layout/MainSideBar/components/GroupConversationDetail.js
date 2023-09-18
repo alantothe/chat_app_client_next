@@ -1,9 +1,21 @@
 import React from "react";
-
+import { seenBy } from "@/api/conversations/patchRequests";
 function GroupConversationDetail({ conversation, setChatOpen, entireUser }) {
-  const { members = [], detailedMembers = [] } = conversation;
+  const { detailedMembers = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
 
+  const handleConversationClick = () => {
+    const updatedSeenByForm = {
+      _id: loggedInId,
+      conversationId: conversation._id,
+    };
+
+    // send the seenBy request
+    seenBy(updatedSeenByForm);
+
+    // set the chat as open
+    setChatOpen(filteredDetailedMembers);
+  };
   const filteredDetailedMembers = detailedMembers.filter(
     (member) => member._id !== loggedInId
   );
@@ -19,7 +31,7 @@ function GroupConversationDetail({ conversation, setChatOpen, entireUser }) {
   return (
     <div
       onClick={() => {
-        setChatOpen(filteredDetailedMembers);
+        handleConversationClick();
       }}
       className="flex mx-6 my-4"
     >

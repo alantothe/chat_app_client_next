@@ -5,14 +5,40 @@ import { UsersIcon } from "@heroicons/react/24/outline";
 import { sendMessage } from "@/api/messages/postRequest";
 import { useDispatch, useSelector } from "react-redux";
 import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
+import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
+import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
 import MessageDetail from "./components/MessageDetail";
+import { seenBy } from "@/api/conversations/patchRequests";
 function ChatBox({ chatOpen, entireUser }) {
   const dispatch = useDispatch();
-  console.log("chatOpen:", chatOpen);
 
   const allMessages = useSelector(
     (state) => state.activeConversation?.allMessages?.messages || []
   );
+  const conversationId = useSelector(
+    (state) =>
+      state.activeConversation?.allMessages?.messages[0]?.conversationId || ""
+  );
+
+  const [seenByForm, setSeenByForm] = useState({
+    _id: "",
+    conversationId: "",
+  });
+  useEffect(() => {
+    let userId = entireUser ? entireUser._id : null;
+    const updatedSeenByForm = {
+      ...seenByForm,
+      _id: userId,
+      conversationId: conversationId,
+    };
+
+    setSeenByForm(updatedSeenByForm);
+    console.log(updatedSeenByForm);
+    seenBy(updatedSeenByForm);
+    dispatch(fetchAllConversationByIdThunk(userId));
+    dispatch(fetchGroupConversationByIdThunk(userId));
+  }, [conversationId]);
+
   const messageGroups = groupConsecutiveMessages(allMessages);
 
   const [formData, setFormData] = useState({
