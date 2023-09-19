@@ -7,7 +7,13 @@ import socket from "@/api/socket";
 import { seenBy } from "@/api/conversations/patchRequests";
 import { fetchAllConversationById } from "@/api/conversations/getRequests";
 import { fetchGroupConversationById } from "@/api/conversations/getRequests";
-function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
+function MainSideBar({
+  entireUser,
+  conversations,
+  setChatOpen,
+  group,
+  queryResults,
+}) {
   const [activeConversationSeen, setActiveConversationSeen] = useState(false);
   const [message, setMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -54,6 +60,10 @@ function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
   const handleSearch = (searchTerm) => {
     socket.emit("search", searchTerm);
   };
+
+  useEffect(() => {
+    console.log(queryResults);
+  }, [queryResults]);
   return (
     <div
       className="h-full text-white flex-col items-center justify-center"

@@ -14,6 +14,7 @@ import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 import { seenBy } from "@/api/conversations/patchRequests";
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const [queryResults, setQueryResults] = useState([]);
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const entireUser = useSelector((state) => state.user.entireUser);
   const conversations = useSelector((state) => state.conversation.conversation);
@@ -114,6 +115,9 @@ const Dashboard = () => {
         console.log("Logged-in user is NOT in the members array.");
       }
     };
+    const handleQueryResults = (conversations) => {
+      setQueryResults(conversations);
+    };
 
     const isActiveChatOpen = (incomingConversationId) => {
       // if the current chat open is the same as the incoming message's conversation
@@ -126,9 +130,7 @@ const Dashboard = () => {
 
     socket.on("message sent", handleNewMessage);
 
-    socket.on("searchResults", (conversations) => {
-      console.log(conversations);
-    });
+    socket.on("searchResults", handleQueryResults);
 
     // remove the listener when the component unmounts
     return () => {
@@ -149,6 +151,7 @@ const Dashboard = () => {
         style={{ flexBasis: "20.833333%", borderRightWidth: "1px" }}
       >
         <MainSideBar
+          queryResults={queryResults}
           setChatOpen={setChatOpen}
           conversations={conversations}
           entireUser={entireUser}
