@@ -3,35 +3,42 @@ import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 import GroupConversationDetail from "./components/GroupConversationDetail";
 import { Badge, Button } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
-
+import { seenBy } from "@/api/conversations/patchRequests";
+import { fetchAllConversationById } from "@/api/conversations/getRequests";
+import { fetchGroupConversationById } from "@/api/conversations/getRequests";
 function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
+  const [activeConversationSeen, setActiveConversationSeen] = useState(false);
   const [message, setMessage] = useState("");
   const [activeMode, setActiveMode] = useState("direct");
   const _id = useSelector((state) => state.user.loggedInUser?._id);
-  console.log(conversations);
 
   const unreadGroup = useSelector(
     (state) => state.groupConversation.groupConversations
   );
   const unread = useSelector((state) => state.conversation.conversation);
 
+  const conversationId = useSelector(
+    (state) =>
+      state.activeConversation?.allMessages?.messages[0]?.conversationId || ""
+  );
+
   const unreadCount = unread
     ? unread.filter((conversation) => {
-        return !conversation.lastSeenBy.some((seen) => seen.userId === _id);
+        return (
+          conversation._id !== conversationId &&
+          !conversation.lastSeenBy.includes(_id)
+        );
       }).length
     : 0;
 
   const unreadGroupCount = unreadGroup
     ? unreadGroup.filter((conversation) => {
-        return !conversation.lastSeenBy.some((seen) => seen.userId === _id);
+        return (
+          conversation._id !== conversationId &&
+          !conversation.lastSeenBy.includes(_id)
+        );
       }).length
     : 0;
-
-  useEffect(() => {
-    console.log(unread);
-    console.log(unreadCount);
-    console.log(unreadGroupCount);
-  }, [unreadGroupCount, unread]);
 
   const handleChange = (e) => {
     setMessage(e.target.value);

@@ -27,10 +27,18 @@ const Dashboard = () => {
   const [messageForm, setMessageForm] = useState({
     members: [],
   });
+  const conversationId = useSelector(
+    (state) =>
+      state.activeConversation?.allMessages?.messages[0]?.conversationId || ""
+  );
+
+  const hasCommonElement = (arr1, arr2) => {
+    return arr1.some((item) => arr2.includes(item));
+  };
 
   useEffect(() => {
-    console.log("chatOpen updated:", chatOpen);
-  }, [chatOpen]);
+    console.log(`conversationId updated to: ${conversationId}`);
+  }, [conversationId]);
 
   useEffect(() => {
     if (chatOpen && chatOpen.length > 0 && loggedInUser && loggedInUser._id) {
@@ -45,7 +53,6 @@ const Dashboard = () => {
       }
 
       setMessageForm({ members: membersArray });
-      console.log(chatOpen);
     }
   }, [chatOpen, loggedInUser, lastUpdatedConversation]);
 
@@ -56,7 +63,7 @@ const Dashboard = () => {
       dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
       dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));
 
-      socket.emit("hello from client", { data: loggedInUser._id });
+      socket.emit("set-user", { data: loggedInUser._id });
     }
   }, [loggedInUser, entireUser, conversations]);
 
@@ -74,21 +81,38 @@ const Dashboard = () => {
       }
     };
     const handleNewMessage = (data) => {
-      console.log(data.data.members);
-      if (
-        Array.isArray(data.data.members) &&
-        data.data.members.includes(loggedInUser._id)
-      ) {
+      console.log("Received a new message emit...");
+
+      // Check if logged-in user is a member of this conversation
+      if (data.data.members.includes(loggedInUser._id)) {
         console.log("Logged-in user is in the members array");
-        dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
-        dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));
+        seenBy({ _id: loggedInUser._id, conversationId: data.data._id });
+        // If the chat is currently active for the logged-in user
+        if (isActiveChatOpen(data.data._id)) {
+          console.log(
+            "Active chat is open. Updating seen status and fetching messages."
+          );
+          console.log({ _id: loggedInUser._id, conversationId: data.data._id });
 
-        // Update the lastUpdatedConversation state
-
-        setLastUpdatedConversation(data.data._id);
-
-        console.log(data.data._id);
+          // Fetch the latest messages if the chat is open
+          dispatch(getMessagesThunk({ members: data.data.members }));
+          // Update the seen status for the receiver
+          dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
+          seenBy({ _id: loggedInUser._id, conversationId: data.data._id });
+        }
+        // If chat isn't active, then notify (e.g., via badge or similar)
+        else {
+          console.log("Chat isn't active. Notify the user.");
+          dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
+        }
+      } else {
+        console.log("Logged-in user is NOT in the members array.");
       }
+    };
+
+    const isActiveChatOpen = (incomingConversationId) => {
+      // Check if the current chat open is the same as the incoming message's conversation
+      return conversationId === incomingConversationId;
     };
 
     socket.on("friend request accepted", handleAccept);
@@ -103,7 +127,7 @@ const Dashboard = () => {
       socket.off("friend request accepted", handleAccept);
       socket.off("message sent", handleNewMessage);
     };
-  }, [loggedInUser, dispatch]);
+  }, [loggedInUser, conversationId, , dispatch]);
 
   return (
     <div className="flex flex-row w-screen h-screen m-0">

@@ -15,29 +15,6 @@ function ChatBox({ chatOpen, entireUser }) {
   const allMessages = useSelector(
     (state) => state.activeConversation?.allMessages?.messages || []
   );
-  const conversationId = useSelector(
-    (state) =>
-      state.activeConversation?.allMessages?.messages[0]?.conversationId || ""
-  );
-
-  const [seenByForm, setSeenByForm] = useState({
-    _id: "",
-    conversationId: "",
-  });
-  useEffect(() => {
-    let userId = entireUser ? entireUser._id : null;
-    const updatedSeenByForm = {
-      ...seenByForm,
-      _id: userId,
-      conversationId: conversationId,
-    };
-
-    setSeenByForm(updatedSeenByForm);
-    console.log(updatedSeenByForm);
-    seenBy(updatedSeenByForm);
-    dispatch(fetchAllConversationByIdThunk(userId));
-    dispatch(fetchGroupConversationByIdThunk(userId));
-  }, [conversationId]);
 
   const messageGroups = groupConsecutiveMessages(allMessages);
 
@@ -93,10 +70,18 @@ function ChatBox({ chatOpen, entireUser }) {
   };
 
   const handleSubmit = async () => {
-    console.log("Sending message with data:", formData);
     try {
-      sendMessage(formData);
-    } catch (error) {}
+      await sendMessage(formData);
+
+      // combine sender and recipients into a single array
+      const members = [formData.senderId, ...formData.recipientIds];
+      console.log(members);
+      // fetch the latest messages for the conversation
+      dispatch(getMessagesThunk({ members }));
+      dispatch(fetchAllConversationByIdThunk(formData.senderId));
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
   };
 
   return (

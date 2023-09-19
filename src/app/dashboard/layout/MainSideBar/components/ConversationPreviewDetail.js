@@ -14,12 +14,17 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
       _id: loggedInId,
       conversationId: conversation._id,
     };
+    console.log(updatedSeenByForm);
 
-    // Send the seenBy request
-    seenBy(updatedSeenByForm);
-
-    // Set the chat as open
+    // set the chat as open
     setChatOpen(filteredDetailedMembers);
+
+    // send the seenBy request
+
+    seenBy(updatedSeenByForm);
+    //refetch status
+
+    dispatch(fetchAllConversationByIdThunk(loggedInId));
   };
 
   const filteredDetailedMembers = detailedMembers.filter(
