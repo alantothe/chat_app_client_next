@@ -72,6 +72,7 @@ function ChatBox({ chatOpen, entireUser }) {
   const handleSubmit = async () => {
     try {
       await sendMessage(formData);
+      console.log(formData);
 
       // combine sender and recipients into a single array
       const members = [formData.senderId, ...formData.recipientIds];
@@ -79,6 +80,7 @@ function ChatBox({ chatOpen, entireUser }) {
       // fetch the latest messages for the conversation
       dispatch(getMessagesThunk({ members }));
       dispatch(fetchAllConversationByIdThunk(formData.senderId));
+      dispatch(fetchGroupConversationByIdThunk(formData.senderId));
     } catch (error) {
       console.error("Error sending message:", error);
     }

@@ -32,13 +32,11 @@ const Dashboard = () => {
       state.activeConversation?.allMessages?.messages[0]?.conversationId || ""
   );
 
-  const hasCommonElement = (arr1, arr2) => {
-    return arr1.some((item) => arr2.includes(item));
-  };
-
   useEffect(() => {
     console.log(`conversationId updated to: ${conversationId}`);
-  }, [conversationId]);
+    console.log(`ChatOpen updated to:`);
+    console.log(chatOpen);
+  }, [conversationId, chatOpen]);
 
   useEffect(() => {
     if (chatOpen && chatOpen.length > 0 && loggedInUser && loggedInUser._id) {
@@ -83,27 +81,35 @@ const Dashboard = () => {
     const handleNewMessage = (data) => {
       console.log("Received a new message emit...");
 
-      // Check if logged-in user is a member of this conversation
+      // check if logged-in user is a member of this conversation
       if (data.data.members.includes(loggedInUser._id)) {
         console.log("Logged-in user is in the members array");
         seenBy({ _id: loggedInUser._id, conversationId: data.data._id });
-        // If the chat is currently active for the logged-in user
+
+        // determine if the incoming message is from a direct chat or group chat
+        if (data.data.members.length === 2) {
+          // direct chat
+          dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
+        } else if (data.data.members.length > 2) {
+          // group chat
+          dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));
+        }
+
+        // if the chat is currently active for the logged-in user
         if (isActiveChatOpen(data.data._id)) {
           console.log(
             "Active chat is open. Updating seen status and fetching messages."
           );
           console.log({ _id: loggedInUser._id, conversationId: data.data._id });
 
-          // Fetch the latest messages if the chat is open
+          // fetch the latest messages if the chat is open
           dispatch(getMessagesThunk({ members: data.data.members }));
-          // Update the seen status for the receiver
-          dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
+          // update the seen status for the receiver
           seenBy({ _id: loggedInUser._id, conversationId: data.data._id });
         }
-        // If chat isn't active, then notify (e.g., via badge or similar)
+        // if chat isn't active, then notify (e.g., via badge or similar)
         else {
           console.log("Chat isn't active. Notify the user.");
-          dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
         }
       } else {
         console.log("Logged-in user is NOT in the members array.");
@@ -111,7 +117,7 @@ const Dashboard = () => {
     };
 
     const isActiveChatOpen = (incomingConversationId) => {
-      // Check if the current chat open is the same as the incoming message's conversation
+      // if the current chat open is the same as the incoming message's conversation
       return conversationId === incomingConversationId;
     };
 
@@ -132,7 +138,7 @@ const Dashboard = () => {
   return (
     <div className="flex flex-row w-screen h-screen m-0">
       <div style={{ flexBasis: "4.166667%" }}>
-        <SideUserBar entireUser={entireUser} />
+        <SideUserBar setChatOpen={setChatOpen} entireUser={entireUser} />
       </div>
 
       <div

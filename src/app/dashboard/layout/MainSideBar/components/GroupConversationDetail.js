@@ -1,6 +1,10 @@
-import React from "react";
+import React, { use } from "react";
 import { seenBy } from "@/api/conversations/patchRequests";
+import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
+import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
+import { useDispatch } from "react-redux";
 function GroupConversationDetail({ conversation, setChatOpen, entireUser }) {
+  const dispatch = useDispatch();
   const { detailedMembers = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
 
@@ -15,6 +19,9 @@ function GroupConversationDetail({ conversation, setChatOpen, entireUser }) {
 
     // set the chat as open
     setChatOpen(filteredDetailedMembers);
+
+    dispatch(fetchGroupConversationByIdThunk(loggedInId));
+    dispatch(fetchAllConversationByIdThunk(loggedInId));
   };
   const filteredDetailedMembers = detailedMembers.filter(
     (member) => member._id !== loggedInId

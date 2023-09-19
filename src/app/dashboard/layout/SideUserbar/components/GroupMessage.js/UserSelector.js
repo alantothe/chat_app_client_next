@@ -12,10 +12,9 @@ import { useState } from "react";
 export function UserSelector({ users, onUserSelect, isOpen, toggleOpen }) {
   const [selectedName, setSelectedName] = useState("");
 
-  const handleSelect = (_id, firstName, lastName) => {
-    const fullName = `${firstName} ${lastName}`;
-    setSelectedName(fullName);
-    if (onUserSelect) onUserSelect(_id, fullName); // pass _id and full name
+  const handleSelect = (user) => {
+    setSelectedName(`${user.firstName} ${user.lastName}`);
+    if (onUserSelect) onUserSelect(user); // pass the entire user object
     toggleOpen(false); // Close the dialog upon selection
   };
 
@@ -31,20 +30,17 @@ export function UserSelector({ users, onUserSelect, isOpen, toggleOpen }) {
       <Dialog open={isOpen} handler={toggleOpen}>
         <DialogHeader>Select a user</DialogHeader>
         <DialogBody divider className="max-h-[20rem] overflow-y-auto">
-          {users.map(({ _id, firstName, lastName, avatar }) => (
-            <ListItem
-              key={_id}
-              onClick={() => handleSelect(_id, firstName, lastName)}
-            >
+          {users.map((user) => (
+            <ListItem key={user._id} onClick={() => handleSelect(user)}>
               <ListItemPrefix>
                 <Avatar
                   variant="circular"
-                  alt={`${firstName} ${lastName}`}
-                  src={avatar}
+                  alt={`${user.firstName} ${user.lastName}`}
+                  src={user.avatar}
                 />
               </ListItemPrefix>
               <Typography variant="h6" color="blue-gray">
-                {firstName} {lastName}
+                {user.firstName} {user.lastName}
               </Typography>
             </ListItem>
           ))}

@@ -14,6 +14,7 @@ import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ["activeConversation"], // activeConversation state isn't persisted.
 };
 
 const rootReducer = combineReducers({

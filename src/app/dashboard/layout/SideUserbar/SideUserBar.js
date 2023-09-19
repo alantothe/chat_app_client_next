@@ -13,7 +13,7 @@ import { SignOutDialog } from "./components/SignOutDialog";
 import { AddFriendDialog } from "./components/AddFriend/AddFriendDialog";
 import { Inbox } from "./components/Inbox/Inbox";
 import { GroupMessageDialog } from "./components/GroupMessage.js/GroupMessageDialog";
-const SideUserBar = ({ entireUser }) => {
+const SideUserBar = ({ entireUser, setChatOpen }) => {
   let [dialogOpen, setDialogOpen] = useState(false);
   let [addDialogOpen, setAddDialogOpen] = useState(false);
   let [inboxDialogOpen, setInboxDialogOpen] = useState(false);
@@ -128,6 +128,7 @@ const SideUserBar = ({ entireUser }) => {
 
       {entireUser ? (
         <GroupMessageDialog
+          setChatOpen={setChatOpen}
           entireUser={entireUser}
           open={groupDialogOpen}
           toggleGroupDialog={toggleGroupDialog}

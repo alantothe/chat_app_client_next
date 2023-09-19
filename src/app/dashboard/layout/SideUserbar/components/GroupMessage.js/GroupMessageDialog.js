@@ -7,16 +7,23 @@ import {
   DialogFooter,
   Textarea,
 } from "@material-tailwind/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { UserSelector } from "./UserSelector";
 import { sendMessage } from "@/api/messages/postRequest";
+import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
+import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 
-import { fetchGroupConversationById } from "@/api/conversations/getRequests";
-
-export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
+export function GroupMessageDialog({
+  open,
+  toggleGroupDialog,
+  entireUser,
+  setChatOpen,
+}) {
+  const dispatch = useDispatch();
   const userFriends = useSelector(
     (state) => state.user.entireUser.detailedFriends
   );
+
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [formData, setFormData] = useState({
     senderId: entireUser._id,
@@ -28,38 +35,37 @@ export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Extract the _id values from selectedUsers
     const userIds = selectedUsers.map((user) => user._id);
     setFormData((prevData) => ({
       ...prevData,
       recipientIds: userIds,
     }));
   }, [selectedUsers]);
-
-  const handleUserSelect = (userId, userFullName) => {
-    // check if the user is already selected
-    if (!selectedUsers.some((user) => user._id === userId)) {
-      setSelectedUsers((prevUsers) => {
-        const updatedUsers = [
-          ...prevUsers,
-          { _id: userId, fullName: userFullName },
-        ];
-
-        return updatedUsers;
-      });
+  //lift
+  const handleUserSelect = (user) => {
+    // check if the user is already selected based on their ID
+    if (!selectedUsers.some((selectedUser) => selectedUser._id === user._id)) {
+      setSelectedUsers((prevUsers) => [...prevUsers, user]);
     }
   };
-  const handleRemoveUser = (userIdToRemove) => {
+
+  const handleRemoveUser = (userToRemove) => {
     setSelectedUsers((prevUsers) =>
-      prevUsers.filter((user) => user._id !== userIdToRemove)
+      prevUsers.filter((user) => user._id !== userToRemove._id)
     );
   };
 
-  const handleSendMessage = () => {
-    sendMessage(formData);
-    fetchGroupConversationById(entireUser._id);
+  const handleSendMessage = async () => {
+    try {
+      // send the message to the backend
+      await sendMessage(formData);
+      const members = [formData.senderId, ...formData.recipientIds];
+      dispatch(fetchGroupConversationByIdThunk(formData.senderId));
+      dispatch(getMessagesThunk({ members }));
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
   };
-
   return (
     <>
       <Dialog open={open} handler={toggleGroupDialog}>
@@ -88,8 +94,8 @@ export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
                 key={user._id}
                 className="flex items-center p-2 border rounded gap-2"
               >
-                {user.fullName}
-                <button onClick={() => handleRemoveUser(user._id)}>X</button>
+                {user.firstName}
+                <button onClick={() => handleRemoveUser(user)}>X</button>
               </div>
             ))}
           </div>
@@ -98,7 +104,7 @@ export function GroupMessageDialog({ open, toggleGroupDialog, entireUser }) {
           <Button variant="outlined" color="red" onClick={toggleGroupDialog}>
             Close
           </Button>
-          {selectedUsers.length > 2 && (
+          {selectedUsers.length > 1 && (
             <Button
               onClick={handleSendMessage}
               variant="gradient"
