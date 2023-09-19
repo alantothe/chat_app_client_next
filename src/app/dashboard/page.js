@@ -45,7 +45,6 @@ const Dashboard = () => {
 
       //spread
       let membersArray = [...idsFromChatOpen, loggedInUser._id];
-
       if (Array.isArray(membersArray) && membersArray.length > 1) {
         dispatch(getMessagesThunk({ members: membersArray }));
       }
@@ -64,7 +63,7 @@ const Dashboard = () => {
       socket.emit("set-user", { data: loggedInUser._id });
     }
   }, [loggedInUser, entireUser, conversations]);
-
+  //sockets
   useEffect(() => {
     const handleFriendRequest = (data) => {
       if (data.data === loggedInUser._id) {
@@ -126,6 +125,10 @@ const Dashboard = () => {
     socket.on("friend request sent", handleFriendRequest);
 
     socket.on("message sent", handleNewMessage);
+
+    socket.on("searchResults", (conversations) => {
+      console.log(conversations);
+    });
 
     // remove the listener when the component unmounts
     return () => {

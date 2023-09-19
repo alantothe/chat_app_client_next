@@ -3,12 +3,15 @@ import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 import GroupConversationDetail from "./components/GroupConversationDetail";
 import { Badge, Button } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
+import socket from "@/api/socket";
 import { seenBy } from "@/api/conversations/patchRequests";
 import { fetchAllConversationById } from "@/api/conversations/getRequests";
 import { fetchGroupConversationById } from "@/api/conversations/getRequests";
 function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
   const [activeConversationSeen, setActiveConversationSeen] = useState(false);
   const [message, setMessage] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [activeMode, setActiveMode] = useState("direct");
   const _id = useSelector((state) => state.user.loggedInUser?._id);
 
@@ -41,7 +44,15 @@ function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
     : 0;
 
   const handleChange = (e) => {
-    setMessage(e.target.value);
+    const value = e.target.value;
+    setSearchTerm(value); // update the state with the current input value
+
+    // send the updated search term to the server
+    handleSearch(value);
+  };
+
+  const handleSearch = (searchTerm) => {
+    socket.emit("search", searchTerm);
   };
   return (
     <div
@@ -52,6 +63,8 @@ function MainSideBar({ entireUser, conversations, setChatOpen, group }) {
         <input
           className="bg-zinc-800 placeholder-zinc-600 h-12 w-11/12 mt-7 mb-2 rounded"
           placeholder="    Search for Conversation ..."
+          value={searchTerm}
+          onChange={handleChange}
         ></input>
         <div className="absolute bottom-0 left-0 right-0 w-11/12 mx-auto border-b border-white border-opacity-20"></div>
       </header>
