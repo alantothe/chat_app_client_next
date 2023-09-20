@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, createElement, useEffect } from "react";
+import { useState, createElement, useEffect, useRef } from "react";
 import SendIcon from "@/assets/svg/send";
 import { UsersIcon } from "@heroicons/react/24/outline";
 import { sendMessage } from "@/api/messages/postRequest";
@@ -24,6 +24,12 @@ function ChatBox({ chatOpen, entireUser }) {
     message: "",
     img: "",
   });
+
+  const endOfMessagesRef = useRef(null);
+
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView();
+  }, [messageGroups]);
 
   useEffect(() => {
     let senderId = entireUser ? entireUser._id : null;
@@ -120,20 +126,19 @@ function ChatBox({ chatOpen, entireUser }) {
             ></div>
           </header>
 
-          <div className=" relative overflow-y-auto flex-grow flex-col items-center justify-start ml-8 ">
+          <div className="flex-grow overflow-y-auto flex flex-col items-center justify-start ml-8 scrollbar scrollbar-thumb-grey-900 scrollbar-track-zinc-900">
             {/* Start Of Convo Div */}
-            <div className="absolute bottom-0 mb-3 ">
+            <div className="mb-3 w-full ">
               <div className="flex items-center ">
                 {/* Display avatars and names for the Start of the Convo. */}
                 {chatOpen.map((member, index) => (
-                  // group a list without node
-                  <React.Fragment className="flex" key={index}>
+                  <div className="flex" key={index}>
                     <img
                       src={member.avatar}
                       alt="Avatar"
                       className="object-cover w-24 h-24 rounded-full overflow-hidden mr-2 mb-5"
                     />
-                  </React.Fragment>
+                  </div>
                 ))}
               </div>
               <div>
@@ -144,7 +149,7 @@ function ChatBox({ chatOpen, entireUser }) {
                     .join(", ")}
                 </h1>
 
-                <div className="mt-10">
+                <div ref={endOfMessagesRef} className="mt-10">
                   {messageGroups.map((group, groupIndex) => (
                     <MessageDetail
                       messages={group.messages}
