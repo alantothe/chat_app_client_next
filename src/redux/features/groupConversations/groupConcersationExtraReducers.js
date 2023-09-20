@@ -11,7 +11,9 @@ export const fetchGroupConversationByIdReducer = (builder) => {
     .addCase(fetchGroupConversationByIdThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
       // console.log("payload:", action.payload);
-      state.groupConversations = action.payload.groupConversations;
+      state.groupConversations = action.payload.groupConversations.sort(
+        (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+      );
     })
     .addCase(fetchGroupConversationByIdThunk.rejected, (state, action) => {
       state.status = "failed";

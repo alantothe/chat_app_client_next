@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
-import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
+import socket from "@/api/socket";
+import { useSelector } from "react-redux";
+import { Badge, Button } from "@material-tailwind/react";
+import { useState, useEffect } from "react";
 import GroupConversationDetail from "./components/GroupConversationDetail";
 import QueryResultPreviewDetail from "./components/QueryResultPreviewDetail";
-import { Badge, Button } from "@material-tailwind/react";
-import { useSelector } from "react-redux";
-import socket from "@/api/socket";
-import { seenBy } from "@/api/conversations/patchRequests";
-import { fetchAllConversationById } from "@/api/conversations/getRequests";
-import { fetchGroupConversationById } from "@/api/conversations/getRequests";
+import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 function MainSideBar({
   entireUser,
   conversations,

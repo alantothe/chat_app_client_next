@@ -11,7 +11,9 @@ export const fetchAllConversationByIdReducer = (builder) => {
     .addCase(fetchAllConversationByIdThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
       // console.log("payload:", action.payload);
-      state.conversation = action.payload.conversation;
+      state.conversation = action.payload.conversation.sort(
+        (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+      );
     })
     .addCase(fetchAllConversationByIdThunk.rejected, (state, action) => {
       state.status = "failed";

@@ -5,8 +5,13 @@ import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/co
 import { useDispatch } from "react-redux";
 function GroupConversationDetail({ conversation, setChatOpen, entireUser }) {
   const dispatch = useDispatch();
-  const { detailedMembers = [] } = conversation;
+  const { detailedMembers = [], detailedLastMessageFrom = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
+
+  const getCombinedFirstNames = (members, maxLength) => {
+    const names = members.map((member) => member.firstName).join(", ");
+    return truncate(names, maxLength);
+  };
 
   const handleConversationClick = () => {
     const updatedSeenByForm = {
@@ -27,6 +32,9 @@ function GroupConversationDetail({ conversation, setChatOpen, entireUser }) {
     (member) => member._id !== loggedInId
   );
 
+  const groupAvatar =
+    "https://res.cloudinary.com/dzjr3skhe/image/upload/v1695169933/user-group-296_dpyuzx.svg";
+
   // truncate the string
   const truncate = (str, num) => {
     if (str.length <= num) {
@@ -43,19 +51,17 @@ function GroupConversationDetail({ conversation, setChatOpen, entireUser }) {
       className="flex mx-6 my-4"
     >
       <img
-        src={filteredDetailedMembers[0].avatar}
+        src={groupAvatar}
         alt="Avatar"
         className="object-cover  w-16 h-16 rounded-full overflow-hidden"
       />
       <div className="flex-col ml-3 mt-1">
-        <div className="flex">
-          <h1 className="text-xl">{filteredDetailedMembers[0].firstName}</h1>
-          <h1 className="ml-2 text-xl">
-            {filteredDetailedMembers[0].lastName}
-          </h1>
-        </div>
+        <h1 className="text-xl">
+          {getCombinedFirstNames(filteredDetailedMembers, 25)}
+        </h1>
         <p className=" text-sm text-zinc-700">
           {" "}
+          {detailedLastMessageFrom[0].firstName}:{" "}
           {truncate(conversation.lastMessage, 23)}
         </p>
       </div>

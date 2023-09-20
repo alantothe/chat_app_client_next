@@ -1,8 +1,29 @@
 import React from "react";
+import { seenBy } from "@/api/conversations/patchRequests";
+import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
+import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
+import { useDispatch } from "react-redux";
 
 function QueryResultPreviewDetail({ queryResults, setChatOpen, entireUser }) {
+  const dispatch = useDispatch();
   const { detailedMembers } = queryResults;
   let loggedInId = entireUser ? entireUser._id : null;
+
+  const handleConversationClick = () => {
+    const updatedSeenByForm = {
+      _id: loggedInId,
+      conversationId: queryResults._id,
+    };
+
+    // send the seenBy request
+    seenBy(updatedSeenByForm);
+
+    // set the chat as open
+    setChatOpen(filteredDetailedMembers);
+
+    dispatch(fetchGroupConversationByIdThunk(loggedInId));
+    dispatch(fetchAllConversationByIdThunk(loggedInId));
+  };
 
   const filteredDetailedMembers = detailedMembers.filter(
     (member) => member._id !== loggedInId
@@ -11,7 +32,6 @@ function QueryResultPreviewDetail({ queryResults, setChatOpen, entireUser }) {
   const groupAvatar =
     "https://res.cloudinary.com/dzjr3skhe/image/upload/v1695169933/user-group-296_dpyuzx.svg";
 
-  // truncate the string
   const truncate = (str, num) => {
     if (str.length <= num) {
       return str;
@@ -20,18 +40,31 @@ function QueryResultPreviewDetail({ queryResults, setChatOpen, entireUser }) {
   };
 
   return (
-    <div>
-      {/* Avatars Display */}
-      {filteredDetailedMembers.map((member, index) => (
-        <div className="flex">
-          <img
-            key={index}
-            src={member.avatar}
-            alt="Avatar"
-            className="object-cover w-16 h-16 rounded-full overflow-hidden mr-2"
-          />
-        </div>
-      ))}
+    <div
+      onClick={() => {
+        handleConversationClick();
+      }}
+      className="flex mx-6 my-4"
+    >
+      {/* Group Avatar Display if more than one member */}
+      {filteredDetailedMembers.length > 1 ? (
+        <img
+          src={groupAvatar}
+          alt="Group Avatar"
+          className="object-cover w-16 h-16 rounded-full overflow-hidden mr-2"
+        />
+      ) : (
+        // Individual Avatars Display
+        filteredDetailedMembers.map((member, index) => (
+          <div key={index} className="flex">
+            <img
+              src={member.avatar}
+              alt="Avatar"
+              className="object-cover w-16 h-16 rounded-full overflow-hidden mr-2"
+            />
+          </div>
+        ))
+      )}
 
       <div className="flex-col ml-3 mt-1">
         <div className="flex">

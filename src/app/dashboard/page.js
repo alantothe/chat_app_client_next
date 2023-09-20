@@ -56,7 +56,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (loggedInUser?._id && !entireUser && !conversations) {
-      console.log(group);
       dispatch(getUserByIdThunk(loggedInUser._id));
       dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
       dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));

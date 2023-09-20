@@ -5,9 +5,10 @@ import { seenBy } from "@/api/conversations/patchRequests";
 
 function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
   const dispatch = useDispatch();
-  const { detailedMembers = [] } = conversation;
+  const { detailedMembers = [], detailedLastMessageFrom = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
-
+  console.log("Detailed Message From");
+  console.log(detailedLastMessageFrom);
   const handleConversationClick = () => {
     const updatedSeenByForm = {
       _id: loggedInId,
@@ -69,6 +70,7 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
           </h1>
         </div>
         <p className=" text-sm text-zinc-700">
+          {detailedLastMessageFrom[0].firstName}:{" "}
           {truncate(conversation.lastMessage, 23)}
         </p>
       </div>
