@@ -1,7 +1,6 @@
 import React from "react";
 import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
-import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { seenBy } from "@/api/conversations/patchRequests";
 
 function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {

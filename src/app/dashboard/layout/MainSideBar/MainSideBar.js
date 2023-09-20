@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ConversationPreviewDetail from "./components/ConversationPreviewDetail";
 import GroupConversationDetail from "./components/GroupConversationDetail";
+import QueryResultPreviewDetail from "./components/QueryResultPreviewDetail";
 import { Badge, Button } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import socket from "@/api/socket";
@@ -51,10 +52,16 @@ function MainSideBar({
 
   const handleChange = (e) => {
     const value = e.target.value;
-    setSearchTerm(value); // update the state with the current input value
+    setSearchTerm(value);
 
-    // send the updated search term to the server
-    handleSearch(value);
+    if (value.trim().length > 0) {
+      handleSearch(value);
+    } else {
+      // Emit an event to the server to clear the search results
+      socket.emit("clearSearch");
+
+      // clear local search results
+    }
   };
 
   const handleSearch = (searchTerm) => {
@@ -62,8 +69,14 @@ function MainSideBar({
   };
 
   useEffect(() => {
+    if (queryResults.length === 0) {
+      setActiveMode("direct");
+    } else {
+      setActiveMode("query");
+    }
     console.log(queryResults);
   }, [queryResults]);
+
   return (
     <div
       className="h-full text-white flex-col items-center justify-center"
@@ -79,56 +92,73 @@ function MainSideBar({
         <div className="absolute bottom-0 left-0 right-0 w-11/12 mx-auto border-b border-white border-opacity-20"></div>
       </header>
 
-      <div className="mt-3  flex justify-between mx-5 ">
-        <Badge content={unreadCount} invisible={unreadCount === 0} withBorder>
-          <Button
-            className="button-class"
-            onClick={() => {
-              console.log("Direct Messages button clicked!");
-              setActiveMode("direct");
-            }}
-          >
-            Direct Messages
-          </Button>
-        </Badge>
+      {activeMode === "query" ? (
+        queryResults.map((convo, index) => (
+          <QueryResultPreviewDetail
+            entireUser={entireUser}
+            setChatOpen={setChatOpen}
+            queryResults={convo}
+            key={index}
+          />
+        ))
+      ) : (
+        <div>
+          <div className="mt-3  flex justify-between mx-5 ">
+            <Badge
+              content={unreadCount}
+              invisible={unreadCount === 0}
+              withBorder
+            >
+              <Button
+                className="button-class"
+                onClick={() => {
+                  console.log("Direct Messages button clicked!");
+                  setActiveMode("direct");
+                }}
+              >
+                Direct Messages
+              </Button>
+            </Badge>
 
-        <Badge
-          content={unreadGroupCount}
-          invisible={unreadGroupCount === 0}
-          withBorder
-        >
-          <Button
-            className="button-class"
-            onClick={() => {
-              console.log("Group Message button clicked!");
-              setActiveMode("group");
-            }}
-          >
-            Group Message
-          </Button>
-        </Badge>
-      </div>
+            <Badge
+              content={unreadGroupCount}
+              invisible={unreadGroupCount === 0}
+              withBorder
+            >
+              <Button
+                className="button-class"
+                onClick={() => {
+                  console.log("Group Message button clicked!");
+                  setActiveMode("group");
+                }}
+              >
+                Group Message
+              </Button>
+            </Badge>
+          </div>
 
-      {activeMode === "direct" && conversations
-        ? conversations.map((convo, index) => (
-            <ConversationPreviewDetail
-              entireUser={entireUser}
-              setChatOpen={setChatOpen}
-              conversation={convo}
-              key={index}
-            />
-          ))
-        : null}
-      {activeMode === "group" && group
-        ? group.map((convo, index) => (
-            <GroupConversationDetail
-              entireUser={entireUser}
-              setChatOpen={setChatOpen}
-              conversation={convo}
-              key={index}
-            />
-          ))
-        : null}
+          {activeMode === "direct" && conversations
+            ? conversations.map((convo, index) => (
+                <ConversationPreviewDetail
+                  entireUser={entireUser}
+                  setChatOpen={setChatOpen}
+                  conversation={convo}
+                  key={index}
+                />
+              ))
+            : null}
+          {activeMode === "group" && group
+            ? group.map((convo, index) => (
+                <GroupConversationDetail
+                  entireUser={entireUser}
+                  setChatOpen={setChatOpen}
+                  conversation={convo}
+                  key={index}
+                />
+              ))
+            : null}
+        </div>
+      )}
     </div>
   );
 }
