@@ -42,48 +42,65 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
   }, [friendRequestsReceived]);
 
   const toggleInboxDialog = () => setInboxDialogOpen((prev) => !prev);
+
   return (
     <div
-      className="h-full text-white flex flex-col items-center justify-start pt-7"
+      className="h-full text-white flex flex-col items-center justify-start pt-7 overflow-hidden"
       style={{ backgroundColor: "rgb(18, 18, 22)" }}
     >
       {entireUser ? (
         <UserProfile user={{ avatar: entireUser.avatar }} avatarSize="50px" />
       ) : null}
-      <Tooltip
-        content="Send Friend Request"
-        placement="right"
-        className="bg-zinc-700 mt-1"
-      >
-        {createElement(
-          UserPlusIcon,
 
-          {
-            className: "h-14 w-14 pt-3  cursor-pointer",
+      {/* Icons Container */}
+      <div className="flex flex-col items-center overflow-hidden flex-grow">
+        <Tooltip
+          content="Send Friend Request"
+          placement="right"
+          className="bg-zinc-700 mt-1"
+        >
+          {createElement(UserPlusIcon, {
+            className: "h-14 w-14 pt-3 cursor-pointer",
             onClick: toggleAddDialog,
-          }
-        )}
-      </Tooltip>
-      <Tooltip
-        content="Create Group Chat"
-        placement="right"
-        className="bg-zinc-700 mt-1"
-      >
-        {createElement(ChatBubbleLeftRightIcon, {
-          className: "h-14 w-14 pt-3 cursor -pointer",
-          onClick: toggleGroupDialog,
-        })}
-      </Tooltip>
-      <Tooltip
-        content="Profile Page"
-        placement="right"
-        className="bg-zinc-700 mt-1"
-      >
-        {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
-      </Tooltip>
-      {badgeCount > 0 ? (
-        <div className="relative inline-block overflow-visible">
-          <Badge content={badgeCount} className="bg-zinc-200 mt-3 h-2 w-2 ">
+          })}
+        </Tooltip>
+
+        <Tooltip
+          content="Create Group Chat"
+          placement="right"
+          className="bg-zinc-700 mt-1"
+        >
+          {createElement(ChatBubbleLeftRightIcon, {
+            className: "h-14 w-14 pt-3 cursor-pointer",
+            onClick: toggleGroupDialog,
+          })}
+        </Tooltip>
+
+        <Tooltip
+          content="Profile Page"
+          placement="right"
+          className="bg-zinc-700 mt-1"
+        >
+          {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
+        </Tooltip>
+
+        {badgeCount > 0 ? (
+          <div className="relative inline-block overflow-visible">
+            <Badge content={badgeCount} className="bg-zinc-200 mt-3 h-2 w-2">
+              <Tooltip
+                content="Inbox"
+                placement="right"
+                className="bg-zinc-700 mt-1"
+              >
+                {createElement(InboxArrowDownIcon, {
+                  className: "h-14 w-14 pt-3",
+                  onClick: toggleInboxDialog,
+                })}
+              </Tooltip>
+            </Badge>
+          </div>
+        ) : (
+          <div className="relative inline-block overflow-visible">
             <Tooltip
               content="Inbox"
               placement="right"
@@ -94,30 +111,24 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
                 onClick: toggleInboxDialog,
               })}
             </Tooltip>
-          </Badge>
-        </div>
-      ) : (
-        <div className="relative inline-block overflow-visible">
-          <Tooltip
-            content="Inbox"
-            placement="right"
-            className="bg-zinc-700 mt-1"
-          >
-            {createElement(InboxArrowDownIcon, {
-              className: "h-14 w-14 pt-3",
-              onClick: toggleInboxDialog,
-            })}
-          </Tooltip>
-        </div>
-      )}
-      <Tooltip content="Log Off" placement="right" className="bg-zinc-700 mt-1">
-        {createElement(ArrowSmallLeftIcon, {
-          className: "h-14 w-14 pt-3 cursor-pointer",
-          onClick: toggleDialog,
-        })}
-      </Tooltip>
+          </div>
+        )}
+
+        <Tooltip
+          content="Log Off"
+          placement="right"
+          className="bg-zinc-700 mt-1"
+        >
+          {createElement(ArrowSmallLeftIcon, {
+            className: "h-14 w-14 pt-3 cursor-pointer",
+            onClick: toggleDialog,
+          })}
+        </Tooltip>
+      </div>
+      {/* End of Icons Container */}
 
       <SignOutDialog open={dialogOpen} toggleDialog={toggleDialog} />
+
       {entireUser ? (
         <AddFriendDialog
           entireUser={entireUser}
@@ -139,5 +150,4 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
     </div>
   );
 };
-
 export default SideUserBar;

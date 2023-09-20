@@ -76,7 +76,7 @@ function MainSideBar({
 
   return (
     <div
-      className="h-full text-white flex-col items-center justify-center"
+      className="h-full text-white flex-col items-center justify-center overflow-hidden"
       style={{ backgroundColor: "rgb(18, 18, 22)" }}
     >
       <header className="flex justify-center h-24 relative">

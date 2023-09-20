@@ -76,6 +76,10 @@ function ChatBox({ chatOpen, entireUser }) {
   };
 
   const handleSubmit = async () => {
+    if (!formData.message.trim() || !chatOpen) {
+      // if message is just a space or empty, don't send or if no chat is open
+      return;
+    }
     try {
       await sendMessage(formData);
       console.log(formData);
@@ -89,6 +93,13 @@ function ChatBox({ chatOpen, entireUser }) {
       dispatch(fetchGroupConversationByIdThunk(formData.senderId));
     } catch (error) {
       console.error("Error sending message:", error);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey && chatOpen) {
+      event.preventDefault(); // prevent a new line being added to the input
+      handleSubmit();
     }
   };
 
@@ -126,7 +137,7 @@ function ChatBox({ chatOpen, entireUser }) {
             ></div>
           </header>
 
-          <div className="flex-grow overflow-y-auto flex flex-col items-center justify-start ml-8 scrollbar scrollbar-thumb-grey-900 scrollbar-track-zinc-900">
+          <div className="flex-grow overflow-y-auto flex flex-col-reverse items-center ml-8 scrollbar scrollbar-thumb-grey-900 scrollbar-track-zinc-900">
             {/* Start Of Convo Div */}
             <div className="mb-3 w-full ">
               <div className="flex items-center ">
@@ -149,12 +160,13 @@ function ChatBox({ chatOpen, entireUser }) {
                     .join(", ")}
                 </h1>
 
-                <div ref={endOfMessagesRef} className="mt-10">
+                <div className="mt-10">
                   {messageGroups.map((group, groupIndex) => (
                     <MessageDetail
                       messages={group.messages}
                       key={groupIndex}
                       showAvatar={true}
+                      ref={endOfMessagesRef}
                     />
                   ))}
                 </div>
@@ -191,6 +203,7 @@ function ChatBox({ chatOpen, entireUser }) {
             onChange={handleChange}
             className={`w-full rounded py-2 bg-zinc-900 h-full pl-3 pr-12 placeholder-zinc-700 text-white mb-5`}
             placeholder="Message ..."
+            onKeyDown={handleKeyPress}
           />
           <div className="absolute inset-y-0 right-6 flex items-center">
             <SendIcon

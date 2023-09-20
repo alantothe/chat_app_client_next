@@ -21,6 +21,19 @@ module.exports = withMT({
           800: "#313131",
           900: "#171717", // darkest
         },
+        width: {
+          100: "100px",
+          110: "110px",
+          120: "120px",
+          130: "130px",
+          140: "140px",
+          150: "150px",
+          160: "160px",
+          170: "170px",
+          180: "180px",
+          190: "190px",
+          200: "200px",
+        },
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

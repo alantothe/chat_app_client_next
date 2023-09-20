@@ -1,6 +1,5 @@
 import { fetchAllConversationById } from "@/api/conversations/getRequests";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { seenBy } from "@/api/conversations/patchRequests";
 
 export const fetchAllConversationByIdThunk = createAsyncThunk(
   "conversation/fetchAllConversationById",

@@ -13,8 +13,8 @@ function Friends({ entireUser, setChatOpen }) {
         <h1>Contacts({detailedFriends.length})</h1>
         <div className=""></div>
       </header>
-      <div className="flex-grow p-5 flex flex-col overflow-hidden">
-        <div className="flex-grow overflow-auto">
+      <div className="flex-grow p-5 flex flex-col overflow-hidden ">
+        <div className="flex-grow overflow-auto scrollbar scrollbar-thumb-grey-900 scrollbar-track-zinc-900">
           <h2>Online - ()</h2>
           {detailedFriends &&
             detailedFriends.length > 0 &&
@@ -26,9 +26,9 @@ function Friends({ entireUser, setChatOpen }) {
                 key={index}
               />
             ))}
-        </div>
-        <div className="flex-grow overflow-auto">
-          <h2>Offline - ()</h2>
+          <div className="flex-grow overflow-auto">
+            <h2>Offline - ()</h2>
+          </div>
         </div>
       </div>
     </div>

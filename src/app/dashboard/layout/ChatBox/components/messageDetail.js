@@ -49,7 +49,7 @@ function MessageDetail({ messages, showAvatar }) {
   const formattedDate = formatDate(createdAt);
 
   return (
-    <div className="flex my-3">
+    <div className="flex mt-6">
       {showAvatar && (
         <img
           src={avatar}

@@ -140,15 +140,12 @@ const Dashboard = () => {
   }, [loggedInUser, conversationId, , dispatch]);
 
   return (
-    <div className="flex flex-row w-screen h-screen m-0">
-      <div style={{ flexBasis: "4.166667%" }}>
+    <div className="flex flex-row w-full h-screen m-0 overflow-hidden">
+      <div className="w-16 flex-shrink-0">
         <SideUserBar setChatOpen={setChatOpen} entireUser={entireUser} />
       </div>
 
-      <div
-        className="border-r border-opacity-25 border-white"
-        style={{ flexBasis: "20.833333%", borderRightWidth: "1px" }}
-      >
+      <div className="w-130 flex-shrink-0 border-r border-opacity-25 border-white">
         <MainSideBar
           queryResults={queryResults}
           setChatOpen={setChatOpen}
@@ -158,21 +155,11 @@ const Dashboard = () => {
         />
       </div>
 
-      <div
-        className="border-l border-r border-opacity-25 border-white"
-        style={{
-          flexBasis: "58.333333%",
-          borderLeftWidth: "0px",
-          borderRightWidth: "1px",
-        }}
-      >
+      <div className="flex-grow border-l border-r border-opacity-25 border-white">
         <ChatBox chatOpen={chatOpen} entireUser={entireUser} />
       </div>
 
-      <div
-        className="border-l border-opacity-25 border-white"
-        style={{ flexBasis: "16.666667%", borderLeftWidth: "0px" }}
-      >
+      <div className="w-110 flex-shrink-0 border-l border-opacity-25 border-white">
         <Friends setChatOpen={setChatOpen} entireUser={entireUser} />
       </div>
     </div>
