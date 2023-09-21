@@ -1,50 +1,50 @@
-function formatDate(dateStr) {
-  const messageDate = new Date(dateStr);
-  const currentDate = new Date();
-
-  // Extract year, month, and day
-  const messageYear = messageDate.getFullYear();
-  const messageMonth = messageDate.getMonth();
-  const messageDay = messageDate.getDate();
-
-  const currentYear = currentDate.getFullYear();
-  const currentMonth = currentDate.getMonth();
-  const currentDay = currentDate.getDate();
-
-  // Extract hour and minute
-  const hours = messageDate.getHours();
-  const minutes = messageDate.getMinutes().toString().padStart(2, "0"); // add leading zero if needed
-
-  if (messageYear === currentYear && messageMonth === currentMonth) {
-    if (messageDay === currentDay) {
-      return `Today at ${hours}:${minutes}`;
-    } else if (messageDay === currentDay - 1) {
-      return `Yesterday at ${hours}:${minutes}`;
-    }
-  }
-
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  return `${monthNames[messageMonth]} ${messageDay}, ${messageYear} at ${hours}:${minutes}`;
-}
-
 function MessageDetail({ messages, showAvatar }) {
   const latestMessage = messages[messages.length - 1];
   const { detailedSender, createdAt } = latestMessage;
   const { avatar, firstName, lastName } = detailedSender[0];
   const formattedDate = formatDate(createdAt);
+
+  function formatDate(dateStr) {
+    const messageDate = new Date(dateStr);
+    const currentDate = new Date();
+
+    // Extract year, month, and day
+    const messageYear = messageDate.getFullYear();
+    const messageMonth = messageDate.getMonth();
+    const messageDay = messageDate.getDate();
+
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+    const currentDay = currentDate.getDate();
+
+    // Extract hour and minute
+    const hours = messageDate.getHours();
+    const minutes = messageDate.getMinutes().toString().padStart(2, "0"); // add leading zero if needed
+
+    if (messageYear === currentYear && messageMonth === currentMonth) {
+      if (messageDay === currentDay) {
+        return `Today at ${hours}:${minutes}`;
+      } else if (messageDay === currentDay - 1) {
+        return `Yesterday at ${hours}:${minutes}`;
+      }
+    }
+
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return `${monthNames[messageMonth]} ${messageDay}, ${messageYear} at ${hours}:${minutes}`;
+  }
 
   return (
     <div className="flex mt-6">
