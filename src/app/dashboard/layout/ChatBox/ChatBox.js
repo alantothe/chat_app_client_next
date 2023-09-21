@@ -14,7 +14,7 @@ import {
   PlusCircleIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import MessageDetail from "./components/MessageDetail";
+import MessageDetail from "./components/MessageDetail.js";
 import { InDevelopment } from "./components/InDevelopment";
 
 function ChatBox({ chatOpen, entireUser }) {
