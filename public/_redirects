@@ -1,4 +1,4 @@
-
-/* /.netlify/functions/next_* 200
-
-/* /index.html 200
+/            /login
+/login       /login
+/register    /register
+/dashboard   /dashboard
