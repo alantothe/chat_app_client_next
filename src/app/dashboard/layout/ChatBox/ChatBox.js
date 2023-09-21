@@ -131,9 +131,8 @@ function ChatBox({ chatOpen, entireUser }) {
             <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-start mx-6">
               {/* Render Avatars */}
               {chatOpen.map((member, index) => (
-                <div className="flex">
+                <div className="flex" key={index}>
                   <img
-                    key={index}
                     src={member.avatar}
                     alt="Avatar"
                     className="object-cover w-12 h-12 rounded-full overflow-hidden mr-2"
@@ -197,10 +196,10 @@ function ChatBox({ chatOpen, entireUser }) {
                 </h1>
 
                 <div className="mt-10">
-                  {messageGroups.map((group, groupIndex) => (
+                  {messageGroups.map((group, index) => (
                     <MessageDetail
                       messages={group.messages}
-                      key={groupIndex}
+                      key={index}
                       showAvatar={true}
                       ref={endOfMessagesRef}
                     />
