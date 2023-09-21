@@ -196,7 +196,7 @@ const RegisterPage = () => {
             {showServerError && <PopoverContent>{error}</PopoverContent>}
             {showIncompleteFormError && !showServerError && (
               <PopoverContent>
-                "Please fill out the form completely."
+                {"Please fill out the form completely."}
               </PopoverContent>
             )}
           </Popover>
