@@ -1,5 +1,3 @@
-import React from "react";
-
 function formatDate(dateStr) {
   const messageDate = new Date(dateStr);
   const currentDate = new Date();

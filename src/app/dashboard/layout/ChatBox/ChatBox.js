@@ -2,6 +2,7 @@
 import { useState, createElement, useEffect, useRef } from "react";
 import SendIcon from "@/assets/svg/send";
 import { sendMessage } from "@/api/messages/postRequest";
+import MessageDetail from "./components/MessageDetail.js";
 import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
 import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
@@ -14,7 +15,7 @@ import {
   PlusCircleIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import MessageDetail from "./components/MessageDetail.js";
+
 import { InDevelopment } from "./components/InDevelopment";
 
 function ChatBox({ chatOpen, entireUser }) {
