@@ -63,7 +63,7 @@ function MessageDetail({ messages, showAvatar }) {
             <>
               <h1 className="text-lg font-bold">{firstName}</h1>
               <h1 className="ml-1 text-lg font-bold">{lastName}</h1>
-              <h1 className="ml-2 mt-2 text-zinc-700 text-xs align-bottom">
+              <h1 className="ml-2 mt-2 text-zinc-700 font-extralight text-xs align-bottom">
                 {formattedDate}
               </h1>
             </>

@@ -1,31 +1,39 @@
 "use client";
 import { useState, createElement, useEffect, useRef } from "react";
 import SendIcon from "@/assets/svg/send";
-import { UsersIcon } from "@heroicons/react/24/outline";
 import { sendMessage } from "@/api/messages/postRequest";
-import { useDispatch, useSelector } from "react-redux";
 import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/conversationThunks";
 import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  UsersIcon,
+  PhoneArrowUpRightIcon,
+  UserIcon,
+  PhoneIcon,
+  PlusCircleIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import MessageDetail from "./components/MessageDetail";
-import { seenBy } from "@/api/conversations/patchRequests";
+import { InDevelopment } from "./components/InDevelopment";
+
 function ChatBox({ chatOpen, entireUser }) {
   const dispatch = useDispatch();
+  const endOfMessagesRef = useRef(null);
+  let [dialogOpen, setDialogOpen] = useState(false);
+  const toggleDialog = () => setDialogOpen((prev) => !prev);
 
   const allMessages = useSelector(
     (state) => state.activeConversation?.allMessages?.messages || []
   );
 
   const messageGroups = groupConsecutiveMessages(allMessages);
-
   const [formData, setFormData] = useState({
     senderId: "",
     recipientIds: [],
     message: "",
     img: "",
   });
-
-  const endOfMessagesRef = useRef(null);
 
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView();
@@ -76,7 +84,7 @@ function ChatBox({ chatOpen, entireUser }) {
   };
 
   const handleSubmit = async () => {
-    if (!formData.message.trim() || !chatOpen) {
+    if (!formData.message.trim() || !chatOpen.length) {
       // if message is just a space or empty, don't send or if no chat is open
       return;
     }
@@ -103,6 +111,14 @@ function ChatBox({ chatOpen, entireUser }) {
     }
   };
 
+  // truncate the string
+  const truncate = (str, num) => {
+    if (str.length <= num) {
+      return str;
+    }
+    return str.slice(0, num) + " ...";
+  };
+
   return (
     <div
       className="h-full text-white flex flex-col"
@@ -111,7 +127,7 @@ function ChatBox({ chatOpen, entireUser }) {
       {chatOpen && chatOpen.length > 0 ? (
         <>
           <header className="h-24 relative flex-shrink-0">
-            <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-start ml-6">
+            <div className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-start mx-6">
               {/* Render Avatars */}
               {chatOpen.map((member, index) => (
                 <div className="flex">
@@ -119,17 +135,36 @@ function ChatBox({ chatOpen, entireUser }) {
                     key={index}
                     src={member.avatar}
                     alt="Avatar"
-                    className="object-cover w-14 h-14 rounded-full overflow-hidden mr-2"
+                    className="object-cover w-12 h-12 rounded-full overflow-hidden mr-2"
                   />
                 </div>
               ))}
 
               {/* Render Full Names */}
               <h1 className="ml-3 mt-2 text-xl ">
-                {chatOpen
-                  .map((member) => `${member.firstName} ${member.lastName}`)
-                  .join(", ")}
+                {truncate(
+                  chatOpen
+                    .map((member) => `${member.firstName} ${member.lastName}`)
+                    .join(", "),
+                  35
+                )}
               </h1>
+              {/* Render Icons */}
+
+              <div className="overflow-y-auto flex-grow flex items-center justify-end">
+                <div className="mx-2">
+                  {createElement(UserIcon, {
+                    className: "h-7 w-7 text-white flex-shrink-0",
+                    onClick: toggleDialog,
+                  })}
+                </div>
+                <div className="mx-3">
+                  {createElement(PhoneIcon, {
+                    className: "h-7 w-7 text-white flex-shrink-0",
+                    onClick: toggleDialog,
+                  })}
+                </div>
+              </div>
             </div>
             <div
               style={{ width: "95%" }}
@@ -201,20 +236,29 @@ function ChatBox({ chatOpen, entireUser }) {
             name="message"
             value={formData.message}
             onChange={handleChange}
-            className={`w-full rounded py-2 bg-zinc-900 h-full pl-3 pr-12 placeholder-zinc-700 text-white mb-5`}
+            className={`w-full rounded py-2 bg-zinc-900 h-full  pr-12 placeholder-zinc-700 text-white mb-5 pl-12 outline-none`}
             placeholder="Message ..."
             onKeyDown={handleKeyPress}
+            autoComplete="off"
           />
           <div className="absolute inset-y-0 right-6 flex items-center">
             <SendIcon
               onClick={handleSubmit}
               className={`h-5 w-5 ${
-                formData.message ? "text-zinc-200" : "text-zinc-700"
+                formData.message ? "text-white" : "text-zinc-700"
               }`}
             />
           </div>
+          <div className="absolute inset-y-0 left-6 flex items-center">
+            {createElement(PlusCircleIcon, {
+              className: "h-7 w-7 text-zinc-700 flex-shrink-0 cursor-pointer",
+              onClick: toggleDialog,
+            })}
+          </div>
         </div>
       </footer>
+
+      <InDevelopment open={dialogOpen} toggleDialog={toggleDialog} />
     </div>
   );
 }

@@ -18,7 +18,7 @@ const UserProfile = ({ user = {}, avatarSize = "50px" }) => {
   if (!avatar) return null;
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center border-b pb-3 border-white border-opacity-20">
       <img src={avatar} alt={`${firstName} ${lastName}`} style={avatarStyle} />
       {(firstName || lastName) && (
         <h3 className="ml-4">{`${firstName} ${lastName}`}</h3>

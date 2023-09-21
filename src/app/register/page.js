@@ -19,7 +19,6 @@ const RegisterPage = () => {
     avatar: "",
   });
 
- 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: "image/*",
     onDrop: async (acceptedFiles) => {
@@ -64,12 +63,10 @@ const RegisterPage = () => {
   //based of truthy or falsy from state
   useEffect(() => {
     if (loggedInUser) {
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     }
     if (error) {
       console.error("Error registering user:", error);
-
-      setDisableButton(false);
     }
   }, [loggedInUser, error]);
 

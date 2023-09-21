@@ -12,6 +12,7 @@ import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/co
 import { fetchGroupConversationByIdThunk } from "@/redux/features/groupConversations/groupConversationThunks";
 import { getMessagesThunk } from "@/redux/features/messages/messageThunks";
 import { seenBy } from "@/api/conversations/patchRequests";
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [queryResults, setQueryResults] = useState([]);
@@ -55,12 +56,16 @@ const Dashboard = () => {
   }, [chatOpen, loggedInUser, lastUpdatedConversation]);
 
   useEffect(() => {
+    if (loggedInUser?._id) {
+      socket.emit("set-user", { data: loggedInUser._id });
+    }
+  }, [loggedInUser, socket]);
+
+  useEffect(() => {
     if (loggedInUser?._id && !entireUser && !conversations) {
       dispatch(getUserByIdThunk(loggedInUser._id));
       dispatch(fetchAllConversationByIdThunk(loggedInUser._id));
       dispatch(fetchGroupConversationByIdThunk(loggedInUser._id));
-
-      socket.emit("set-user", { data: loggedInUser._id });
     }
   }, [loggedInUser, entireUser, conversations]);
   //sockets
@@ -122,6 +127,10 @@ const Dashboard = () => {
       // if the current chat open is the same as the incoming message's conversation
       return conversationId === incomingConversationId;
     };
+    socket.on("reconnect", (attemptNumber) => {
+      console.log(`Reconnected after ${attemptNumber} attempts`);
+      socket.emit("set-user", { data: loggedInUser._id });
+    });
 
     socket.on("friend request accepted", handleAccept);
 
@@ -140,12 +149,12 @@ const Dashboard = () => {
   }, [loggedInUser, conversationId, , dispatch]);
 
   return (
-    <div className="flex flex-row w-full h-screen m-0 overflow-hidden">
-      <div className="w-16 flex-shrink-0">
+    <div className="flex flex-row w-full h-screen m-0">
+      <div className="w-16 ">
         <SideUserBar setChatOpen={setChatOpen} entireUser={entireUser} />
       </div>
 
-      <div className="w-130 flex-shrink-0 border-r border-opacity-25 border-white">
+      <div className="border-r border-opacity-25 border-white">
         <MainSideBar
           queryResults={queryResults}
           setChatOpen={setChatOpen}

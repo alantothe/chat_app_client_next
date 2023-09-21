@@ -35,13 +35,9 @@ export function AddFriendDialog({ open, toggleAddDialog, entireUser }) {
 
   return (
     <>
-      <Dialog
-        open={open}
-        handler={toggleAddDialog}
-        className="max-w-md mx-auto mt-10 place-items-center rounded-lg shadow-lg bg-white dark:bg-zinc-900"
-      >
-        <DialogHeader className="bg-blue-gray-100 px-5 py-3 flex justify-between">
-          <Typography variant="h5" color="blue-gray">
+      <Dialog open={open} handler={toggleAddDialog}>
+        <DialogHeader className="bg-zinc-800 px-5 py-3 flex justify-between">
+          <Typography variant="h5" color="white">
             New Friend Request
           </Typography>
           <svg
@@ -59,7 +55,10 @@ export function AddFriendDialog({ open, toggleAddDialog, entireUser }) {
           </svg>
         </DialogHeader>
 
-        <DialogBody divider className="grid place-items-center gap-4 p-5">
+        <DialogBody
+          divider
+          className="bg-zinc-800 px-5 py-3 flex justify-between"
+        >
           <Input
             placeholder="Search By E-Mail"
             value={formData.email}
@@ -73,8 +72,8 @@ export function AddFriendDialog({ open, toggleAddDialog, entireUser }) {
           />
         </DialogBody>
 
-        <DialogFooter className="border-t border-blue-gray-200 space-x-2 px-5 py-3 flex justify-center">
-          <Button onClick={handleSubmit} variant="gradient" color="green">
+        <DialogFooter className="bg-zinc-800 px-5 py-3 flex justify-center">
+          <Button onClick={handleSubmit} color="black">
             Send Friend Request
           </Button>
         </DialogFooter>

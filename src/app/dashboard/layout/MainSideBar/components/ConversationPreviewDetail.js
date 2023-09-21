@@ -3,7 +3,12 @@ import { fetchAllConversationByIdThunk } from "@/redux/features/conversations/co
 import { useDispatch } from "react-redux";
 import { seenBy } from "@/api/conversations/patchRequests";
 
-function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
+function ConversationPreviewDetail({
+  conversation,
+  setChatOpen,
+  entireUser,
+  isLast,
+}) {
   const dispatch = useDispatch();
   const { detailedMembers = [], detailedLastMessageFrom = [] } = conversation;
   let loggedInId = entireUser ? entireUser._id : null;
@@ -44,7 +49,9 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
       onClick={() => {
         handleConversationClick();
       }}
-      className="flex mx-6 my-4"
+      className={`flex mx-6 my-4 pb-3 ${
+        !isLast ? "border-b border-white border-opacity-20" : ""
+      }`}
     >
       {/* Avatars Display */}
       {filteredDetailedMembers.map((member, index) => (
@@ -52,7 +59,7 @@ function ConversationPreviewDetail({ conversation, setChatOpen, entireUser }) {
           key={index}
           src={member.avatar}
           alt="Avatar"
-          className="object-cover w-16 h-16 rounded-full overflow-hidden mr-2"
+          className="object-cover w-12 h-12 rounded-full overflow-hidden mr-2"
         />
       ))}
 

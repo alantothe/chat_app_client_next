@@ -13,8 +13,10 @@ import { SignOutDialog } from "./components/SignOutDialog";
 import { AddFriendDialog } from "./components/AddFriend/AddFriendDialog";
 import { Inbox } from "./components/Inbox/Inbox";
 import { GroupMessageDialog } from "./components/GroupMessage.js/GroupMessageDialog";
+import { InDevelopment } from "../ChatBox/components/InDevelopment";
 const SideUserBar = ({ entireUser, setChatOpen }) => {
   let [dialogOpen, setDialogOpen] = useState(false);
+  let [dialogDevOpen, setDialogDevOpen] = useState(false);
   let [addDialogOpen, setAddDialogOpen] = useState(false);
   let [inboxDialogOpen, setInboxDialogOpen] = useState(false);
   let [groupDialogOpen, setGroupDialogOpen] = useState(false);
@@ -24,6 +26,7 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
   const { friendRequestsReceived = [] } = entireUser || {};
 
   const toggleDialog = () => setDialogOpen((prev) => !prev);
+  const toggleDevDialog = () => setDialogDevOpen((prev) => !prev);
   const toggleAddDialog = () => {
     setAddDialogOpen((prev) => {
       console.log("Toggling addDialogOpen from", prev, "to", !prev);
@@ -45,15 +48,15 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
 
   return (
     <div
-      className="h-full text-white flex flex-col items-center justify-start pt-7 overflow-hidden"
+      className="h-full text-white flex flex-col items-center justify-start pt-7  "
       style={{ backgroundColor: "rgb(18, 18, 22)" }}
     >
       {entireUser ? (
-        <UserProfile user={{ avatar: entireUser.avatar }} avatarSize="50px" />
+        <UserProfile user={{ avatar: entireUser.avatar }} avatarSize="55px" />
       ) : null}
 
       {/* Icons Container */}
-      <div className="flex flex-col items-center overflow-hidden flex-grow">
+      <div className="flex flex-col items-center  flex-grow pt-2">
         <Tooltip
           content="Send Friend Request"
           placement="right"
@@ -81,7 +84,10 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
           placement="right"
           className="bg-zinc-700 mt-1"
         >
-          {createElement(UserCircleIcon, { className: "h-14 w-14 pt-3" })}
+          {createElement(UserCircleIcon, {
+            className: "h-14 w-14 pt-3",
+            onClick: toggleDevDialog,
+          })}
         </Tooltip>
 
         {badgeCount > 0 ? (
@@ -107,7 +113,7 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
               className="bg-zinc-700 mt-1"
             >
               {createElement(InboxArrowDownIcon, {
-                className: "h-14 w-14 pt-3",
+                className: "h-14 w-14 pt-3 ",
                 onClick: toggleInboxDialog,
               })}
             </Tooltip>
@@ -147,6 +153,7 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
       ) : null}
 
       <Inbox open={inboxDialogOpen} toggleInboxDialog={toggleInboxDialog} />
+      <InDevelopment open={dialogDevOpen} toggleDialog={toggleDevDialog} />
     </div>
   );
 };

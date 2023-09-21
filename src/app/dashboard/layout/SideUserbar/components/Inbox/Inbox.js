@@ -19,11 +19,7 @@ export function Inbox({ open, toggleInboxDialog }) {
 
   return (
     <>
-      <Dialog
-        open={open}
-        handler={toggleInboxDialog}
-        className="max-w-4xl w-full mx-auto mt-10 sm:mt-20 place-items-center rounded-lg shadow-lg bg-white dark:bg-zinc-900"
-      >
+      <Dialog open={open} handler={toggleInboxDialog} size={"xs"}>
         <DialogHeader className="bg-zinc-800 px-5 py-3 flex justify-between">
           <Typography variant="h5" color="white">
             Incoming Friend Requests
@@ -56,7 +52,7 @@ export function Inbox({ open, toggleInboxDialog }) {
         </DialogBody>
 
         <DialogFooter className="border-t bg-zinc-800 space-x-2 px-5 py-3 flex justify-center">
-          <Button variant="outlined" color="red" onClick={toggleInboxDialog}>
+          <Button color="black" onClick={toggleInboxDialog}>
             close
           </Button>
         </DialogFooter>

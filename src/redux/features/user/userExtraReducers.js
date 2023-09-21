@@ -8,10 +8,10 @@ import {
 
 export const registerUserReducers = (builder) => {
   builder
-    .addCase(registerUserThunk.pending, (state) => {
-      state.status = "loading";
-      state.error = null;
-    })
+    // .addCase(registerUserThunk.pending, (state) => {
+    //   state.status = "loading";
+    //   state.error = null;
+    // })
     .addCase(registerUserThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
       console.log("Payload:", action.payload);
@@ -25,10 +25,10 @@ export const registerUserReducers = (builder) => {
 
 export const loginUserReducers = (builder) => {
   builder
-    .addCase(loginUserThunk.pending, (state) => {
-      state.status = "loading";
-      state.error = null;
-    })
+    // .addCase(loginUserThunk.pending, (state) => {
+    //   state.status = "loading";
+    //   state.error = null;
+    // })
     .addCase(loginUserThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
       console.log("payload:", action.payload);
@@ -42,10 +42,10 @@ export const loginUserReducers = (builder) => {
 
 export const getUserByIdExtraReducers = (builder) => {
   builder
-    .addCase(getUserByIdThunk.pending, (state) => {
-      state.status = "loading";
-      state.error = null;
-    })
+    // .addCase(getUserByIdThunk.pending, (state) => {
+    //   state.status = "loading";
+    //   state.error = null;
+    // })
     .addCase(getUserByIdThunk.fulfilled, (state, action) => {
       state.status = "succeeded";
       console.log("payload:", action.payload);
