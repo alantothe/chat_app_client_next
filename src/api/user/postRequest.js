@@ -6,6 +6,12 @@ export async function registerUser(credentials) {
     return response;
   } catch (error) {
     console.log("Error: Registering user.", error);
+
+    if (error.response && error.response.data && error.response.data.error) {
+      throw new Error(error.response.data.error);
+    } else {
+      throw error;
+    }
   }
 }
 

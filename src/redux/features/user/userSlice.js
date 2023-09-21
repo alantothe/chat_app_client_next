@@ -19,6 +19,9 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     reset: () => initialState,
+    resetError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     registerUserReducers(builder);
@@ -27,5 +30,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { reset } = userSlice.actions;
+export const { reset, resetError } = userSlice.actions;
 export default userSlice.reducer;

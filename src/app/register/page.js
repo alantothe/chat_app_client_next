@@ -1,15 +1,24 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { registerUserThunk } from "../../redux/features/user/userThunks";
 import { useSelector, useDispatch } from "react-redux";
+import { resetError } from "@/redux/features/user/userSlice";
 import { useDropzone } from "react-dropzone";
+import {
+  Popover,
+  PopoverHandler,
+  PopoverContent,
+} from "@material-tailwind/react";
+
 const RegisterPage = () => {
+  //button logic still needs work
   const router = useRouter();
   const dispatch = useDispatch();
-  const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const error = useSelector((state) => state.user.error);
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const [showIncompleteFormError, setShowIncompleteFormError] = useState(false);
+  const [showServerError, setShowServerError] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -55,9 +64,18 @@ const RegisterPage = () => {
       [name]: value,
     }));
   };
+  const isFormValid = () => {
+    // checking for empty values in formData
+    const formValues = Object.values(formData);
+    return formValues.every((value) => value !== "");
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (!isFormValid()) {
+      setShowIncompleteFormError(true);
+      return;
+    }
     dispatch(registerUserThunk(formData));
   };
   //based of truthy or falsy from state
@@ -69,6 +87,18 @@ const RegisterPage = () => {
       console.error("Error registering user:", error);
     }
   }, [loggedInUser, error]);
+
+  useEffect(() => {
+    if (error) {
+      setShowServerError(true);
+      const timer = setTimeout(() => {
+        dispatch(resetError());
+        setShowServerError(false);
+        setShowIncompleteFormError(false);
+      }, 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className="bg-purple-700 min-h-screen flex items-center justify-center">
@@ -148,13 +178,28 @@ const RegisterPage = () => {
               </div>
             )}
           </div>
-          <button
-            type="submit"
-            // disabled={disableButton}
-            className="bg-purple-700 text-white rounded px-5 py-2 mb-6 w-full text-bold"
-          >
-            Register
-          </button>
+          <Popover>
+            <PopoverHandler>
+              <button
+                type="submit"
+                disabled={!isFormValid()}
+                className="bg-purple-700 text-white rounded px-5 py-2 mb-6 w-full text-bold"
+                onClick={() => {
+                  if (!isFormValid()) {
+                    setShowIncompleteFormError(true);
+                  }
+                }}
+              >
+                Register
+              </button>
+            </PopoverHandler>
+            {showServerError && <PopoverContent>{error}</PopoverContent>}
+            {showIncompleteFormError && !showServerError && (
+              <PopoverContent>
+                "Please fill out the form completely."
+              </PopoverContent>
+            )}
+          </Popover>
         </form>
         <footer className="text-center">
           <h3
