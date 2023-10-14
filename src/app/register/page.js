@@ -101,61 +101,69 @@ const RegisterPage = () => {
   }, [error]);
 
   return (
-    <div className="bg-purple-700 min-h-screen flex items-center justify-center">
-      <section className="bg-gray-800 p-10 rounded-lg w-96">
-        <header className="text-center">
-          <h1 className="text-4xl font-bold mb-10 text-white">Register Page</h1>
-          <h3 className="text-white mb-5">Welcome to Alan_Chat</h3>
+    <div className="bg-black min-h-screen flex items-center justify-center">
+      <section className="bg-[#0C162D] opacity-95 p-4 rounded-lg w-96">
+        <header className=" justify-start">
+          <h3 className="font-mono text-sm text-white opacity-50 justify-start">
+            Welcome to Chattothe!
+          </h3>
+          <h3 className="mb-4 font-mono text-sm text-white opacity-50 justify-start">
+            Let's begin the adventure
+          </h3>
         </header>
         <form className="flex flex-col item-center" onSubmit={handleSubmit}>
+          <label className="text-[#00CFC8] font-mono font-bold text-sm">
+            Enter your email*{" "}
+          </label>
           <input
-            className="text-black mb-5"
-            placeholder="Enter First Name"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          ></input>
-          <input
-            className="text-black mb-5"
-            placeholder="Enter Last Name"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          ></input>
-          <input
-            className="text-black mb-5"
-            placeholder="Enter Email"
+            className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md "
             type="email"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
           ></input>
+          <label className="text-[#00CFC8] font-mono font-bold text-sm">
+            Enter your first name*{" "}
+          </label>
+          <input
+            className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md "
+            id="firstName"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleChange}
+          ></input>
+          <label className="text-[#00CFC8] font-mono font-bold text-sm">
+            Enter your last name*{" "}
+          </label>
+          <input
+            className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md "
+            id="lastName"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleChange}
+          ></input>
+          <label className="text-[#00CFC8] font-mono font-bold text-sm">
+            Create a password*{" "}
+          </label>
 
           <input
-            className="text-black mb-5"
-            placeholder="Password"
+            className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md "
             type="password"
             id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
           ></input>
-          <input
-            className="text-black mb-5"
-            placeholder="Confirm Password"
-            type="password"
-          ></input>
-          <label className="text-white font-bold mt-4">
+
+          <label className="text-[#00CFC8] font-mono font-bold text-sm">
             Upload your avatar:
           </label>
           <div
             {...getRootProps()}
-            className={`dropzone relative mt-4 ${
+            className={`dropzone relative cursor-pointer mt-4 ${
               isDragActive ? "dropzoneActive" : ""
-            } border-2 border-purple-500 rounded-md bg-purple-200 p-4 text-center`}
+            } border-4 border-[#0E2E70] border-opacity-50 rounded-md bg-[#0C162D] p-4 text-center`}
           >
             <input {...getInputProps()} />
             {formData.avatar ? (
@@ -167,23 +175,25 @@ const RegisterPage = () => {
                 />
               </div>
             ) : isDragActive ? (
-              <p>Drop the files here ...</p>
+              <p className="font-mono text-sm text-white opacity-50">
+                Drop the files here ...
+              </p>
             ) : (
-              <p>Drag and drop some files here, or click to select files</p>
+              <p className="font-mono text-sm text-white opacity-50">
+                Drag and drop some files here, or{" "}
+                <span className=" underline">click</span> to select files
+              </p>
             )}
             {formData.avatar !==
               "https://res.cloudinary.com/dzjr3skhe/image/upload/v1687213143/alan_photos/alan-photo-pixelicious_iknzvi.png" && (
-              <div className="mt-2 text-center text-white font-bold">
-                Use this Avatar?
-              </div>
+              <div className="mt-2 text-center text-white font-bold"></div>
             )}
           </div>
           <Popover>
             <PopoverHandler>
               <button
                 type="submit"
-                disabled={!isFormValid()}
-                className="bg-purple-700 text-white rounded px-5 py-2 mb-6 w-full text-bold"
+                className="border-2 border-white cursor-pointer hover:border-green-500 hover:text-green-500 mt-2 text-white opacity-50 rounded px-5 py-2 w-full font-bold"
                 onClick={() => {
                   if (!isFormValid()) {
                     setShowIncompleteFormError(true);
@@ -201,13 +211,10 @@ const RegisterPage = () => {
             )}
           </Popover>
         </form>
-        <footer className="text-center">
-          <h3
-            className="text-white mb-5  cursor-pointer font-bold"
-            onClick={() => router.push("/login")}
-          >
-            Login?
-          </h3>
+        <footer>
+          <h1 className="font-mono text-sm text-white opacity-50 text-center pt-5">
+            Already have an account? <span> Sign in</span>
+          </h1>
         </footer>
       </section>
     </div>

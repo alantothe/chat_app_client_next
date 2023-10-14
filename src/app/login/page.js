@@ -35,15 +35,22 @@ const LoginPage = () => {
     }
   }, [loggedInUser, error]);
   return (
-    <div className="bg-purple-700 min-h-screen flex items-center justify-center">
-      <section className="bg-gray-800 p-10 rounded-lg w-96">
-        <header className="text-center">
-          <h1 className="text-4xl font-bold mb-10 text-white">Login Page</h1>
-          <h3 className="text-white mb-5">Welcome Back to Alan_Chat</h3>
+    <div className="bg-black min-h-screen flex items-center justify-center">
+      <section className="bg-[#0C162D] opacity-95 p-4 rounded-lg w-96">
+        <header className=" justify-start">
+          <h1 className="font-mono text-sm text-white opacity-50 justify-start">
+            Login Page
+          </h1>
+          <h3 className="mb-4 font-mono text-sm text-white opacity-50 justify-start">
+            Welcome Back to Chattothe!
+          </h3>
         </header>
         <form onSubmit={handleSubmit} className="flex flex-col item-center">
+          <label className="text-[#00CFC8] font-mono font-bold text-sm">
+            Enter your email*{" "}
+          </label>
           <input
-            className="text-black mb-5"
+            className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md"
             placeholder="Enter E-Mail"
             id="email"
             name="email"
@@ -51,8 +58,11 @@ const LoginPage = () => {
             onChange={handleChange}
           ></input>
 
+          <label className="text-[#00CFC8] font-mono font-bold text-sm">
+            Enter your password*{" "}
+          </label>
           <input
-            className="text-black mb-5"
+            className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md"
             placeholder="Enter Password"
             type="password"
             id="password"
@@ -60,9 +70,10 @@ const LoginPage = () => {
             value={formData.password}
             onChange={handleChange}
           ></input>
+
           <button
             type="submit"
-            className="bg-purple-700 text-white rounded px-5 py-2 mb-6 w-full"
+            className="border-2 border-white cursor-pointer hover:border-green-500 hover:text-green-500 mt-2 text-white opacity-50 rounded px-5 py-2 w-full font-bold"
           >
             Login
           </button>

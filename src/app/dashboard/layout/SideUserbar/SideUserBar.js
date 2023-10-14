@@ -20,8 +20,6 @@ const SideUserBar = ({ entireUser, setChatOpen }) => {
   let [addDialogOpen, setAddDialogOpen] = useState(false);
   let [inboxDialogOpen, setInboxDialogOpen] = useState(false);
   let [groupDialogOpen, setGroupDialogOpen] = useState(false);
-  //for group dialog
-  let [dropdownOpen, setDropdownOpen] = useState(false);
   const [badgeCount, setBadgeCount] = useState(null);
   const { friendRequestsReceived = [] } = entireUser || {};
 
