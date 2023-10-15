@@ -55,7 +55,6 @@ const LoginPage = () => {
             </label>
             <input
               className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md"
-              placeholder="Enter E-Mail"
               id="email"
               name="email"
               value={formData.email}
@@ -67,7 +66,6 @@ const LoginPage = () => {
             </label>
             <input
               className="text-white mb-5 font-mono text-sm  p-1 outline-none bg-inherit border-2 border-[#0E2E70] rounded-md"
-              placeholder="Enter Password"
               type="password"
               id="password"
               name="password"
