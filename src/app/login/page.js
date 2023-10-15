@@ -78,13 +78,19 @@ const LoginPage = () => {
             Login
           </button>
         </form>
-        <footer className="text-center">
-          <h3
-            className="text-white mb-5 text-purple-700 cursor-pointer font-bold"
-            onClick={() => router.push("/register")}
-          >
-            Register?
-          </h3>
+        <footer>
+          <h1 className="font-mono text-sm text-white opacity-50 text-center pt-5">
+            New to Chattothe?{" "}
+            <span
+              className=" text-white opacity-100 hover:underline cursor-pointer"
+              onClick={() => {
+                router.push("/register");
+              }}
+            >
+              {" "}
+              Register Here
+            </span>
+          </h1>
         </footer>
       </section>
     </div>
