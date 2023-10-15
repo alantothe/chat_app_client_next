@@ -114,7 +114,7 @@ const RegisterPage = () => {
               Welcome to Chattothe!
             </h3>
             <h3 className="mb-4 font-mono text-sm text-white opacity-50 justify-start">
-              Let's begin the adventure
+              Let&apos;s begin the adventure
             </h3>
           </header>
           <form className="flex flex-col item-center" onSubmit={handleSubmit}>

@@ -45,7 +45,7 @@ function ParticlesBackground() {
           },
           move: {
             enable: true,
-            speed: 3,
+            speed: 5,
             direction: "none",
             outMode: "destroy", // Destroy particles when they hit the edge
             straight: true,
